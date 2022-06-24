@@ -1,0 +1,341 @@
+{
+    "id": 1,
+    "name": "Basic Quiz",
+    "questions": [
+        {
+            "id": 1,
+            "name": "Hot sauce branch",
+            "description": {
+                "en": "Which brand of hot sauce is the oldest?",
+                "es": "Which brand of hot sauce is the oldest?",
+                "ja": "Which brand of hot sauce is the oldest?",
+                "uk": "Which brand of hot sauce is the oldest?"
+            },
+            "options": [
+                {
+                    "id": 1,
+                    "description": {
+                        "en": "El Yucateco",
+                        "es": "El Yucateco",
+                        "ja": "El Yucateco",
+                        "uk": "El Yucateco"
+                    },
+                    "isCorrect": false,
+                    "points": 0
+                },
+                {
+                    "id": 2,
+                    "description": {
+                        "en": "Secret Aardvark",
+                        "es": "Secret Aardvark",
+                        "ja": "Secret Aardvark",
+                        "uk": "Secret Aardvark"
+                    },
+                    "isCorrect": false,
+                    "points": -1
+                },
+                {
+                    "id": 3,
+                    "description": {
+                        "en": "Tapatio",
+                        "es": "Tapatio",
+                        "ja": "Tapatio",
+                        "uk": "Tapatio"
+                    },
+                    "isCorrect": false,
+                    "points": 0
+                },
+                {
+                    "id": 4,
+                    "description": {
+                        "en": "Tabasco",
+                        "es": "Tabasco",
+                        "ja": "Tabasco",
+                        "uk": "Tabasco"
+                    },
+                    "isCorrect": true,
+                    "points": 1
+                }
+            ]
+        },
+        {
+            "id": 2,
+            "name": "Ingredients",
+            "description": {
+                "en": "What ingredients are commonly found in hotsauces?",
+                "es": "What ingredients are commonly found in hotsauces?",
+                "ja": "What ingredients are commonly found in hotsauces?",
+                "uk": "What ingredients are commonly found in hotsauces?"
+            },
+            "options": [
+                {
+                    "id": 1,
+                    "description": {
+                        "en": "Peppers",
+                        "es": "Peppers",
+                        "ja": "Peppers",
+                        "uk": "Peppers"
+                    },
+                    "isCorrect": true,
+                    "points": 2
+                },
+                {
+                    "id": 2,
+                    "description": {
+                        "en": "Vinegar",
+                        "es": "Vinegar",
+                        "ja": "Vinegar",
+                        "uk": "Vinegar"
+                    },
+                    "isCorrect": true,
+                    "points": 1
+                },
+                {
+                    "id": 3,
+                    "description": {
+                        "en": "Salt",
+                        "es": "Salt",
+                        "ja": "Salt",
+                        "uk": "Salt"
+                    },
+                    "isCorrect": true,
+                    "points": 1
+                },
+                {
+                    "id": 4,
+                    "description": {
+                        "en": "Glue",
+                        "es": "Glue",
+                        "ja": "Glue",
+                        "uk": "Glue"
+                    },
+                    "isCorrect": false,
+                    "points": -2
+                },
+                {
+                    "id": 4,
+                    "description": {
+                        "en": "Apples",
+                        "es": "Apples",
+                        "ja": "Apples",
+                        "uk": "Apples"
+                    },
+                    "isCorrect": true,
+                    "points": 1
+                }
+            ]
+        },
+        {
+            "id": 3,
+            "name": "Carribean ingredients",
+            "description": {
+                "en": "What two ingredients are most commonly used in Carribean hot sauces?",
+                "es": "What two ingredients are most commonly used in Carribean hot sauces?",
+                "ja": "What two ingredients are most commonly used in Carribean hot sauces?",
+                "uk": "What two ingredients are most commonly used in Carribean hot sauces?"
+            },
+            "options": [
+                {
+                    "id": 1,
+                    "description": {
+                        "en": "Habanero",
+                        "es": "Habanero",
+                        "ja": "Habanero",
+                        "uk": "Habanero"
+                    },
+                    "isCorrect": true,
+                    "points": 1
+                },
+                {
+                    "id": 2,
+                    "description": {
+                        "en": "Thai chilli",
+                        "es": "Thai chilli",
+                        "ja": "Thai chilli",
+                        "uk": "Thai chilli"
+                    },
+                    "isCorrect": false,
+                    "points": -3
+                },
+                {
+                    "id": 3,
+                    "description": {
+                        "en": "Jalepeno",
+                        "es": "Jalepeno",
+                        "ja": "Jalepeno",
+                        "uk": "Jalepeno"
+                    },
+                    "isCorrect": false,
+                    "points": -1
+                },
+                {
+                    "id": 4,
+                    "description": {
+                        "en": "Bell Pepper",
+                        "es": "Bell Pepper",
+                        "ja": "Bell Pepper",
+                        "uk": "Bell Pepper"
+                    },
+                    "isCorrect": false,
+                    "points": 0
+                },
+                {
+                    "id": 5,
+                    "description": {
+                        "en": "Scotch Bonnet",
+                        "es": "Scotch Bonnet",
+                        "ja": "Scotch Bonnet",
+                        "uk": "Scotch Bonnet"
+                    },
+                    "isCorrect": true,
+                    "points": 3
+                },
+                {
+                    "id": 6,
+                    "description": {
+                        "en": "Carribean Fresno",
+                        "es": "Carribean Fresno",
+                        "ja": "Carribean Fresno",
+                        "uk": "Carribean Fresno"
+                    },
+                    "isCorrect": false,
+                    "points": -3
+                }
+            ]
+        },
+        {
+            "id": 4,
+            "name": "UK hot sauces",
+            "description": {
+                "en": "The United Kingdom is home to which of the two hotest peppers in the world?",
+                "es": "The United Kingdom is home to which of the two hotest peppers in the world?",
+                "ja": "The United Kingdom is home to which of the two hotest peppers in the world?",
+                "uk": "The United Kingdom is home to which of the two hotest peppers in the world?"
+            },
+            "options": [
+                {
+                    "id": 1,
+                    "description": {
+                        "en": "Naga Viper",
+                        "es": "Naga Viper",
+                        "ja": "Naga Viper",
+                        "uk": "Naga Viper"
+                    },
+                    "isCorrect": true,
+                    "points": 2
+                },
+                {
+                    "id": 2,
+                    "description": {
+                        "en": "Infinity Chilli",
+                        "es": "Infinity Chilli",
+                        "ja": "Infinity Chilli",
+                        "uk": "Infinity Chilli"
+                    },
+                    "isCorrect": true,
+                    "points": 2
+                },
+                {
+                    "id": 3,
+                    "description": {
+                        "en": "Ghost Chilli",
+                        "es": "Ghost Chilli",
+                        "ja": "Ghost Chilli",
+                        "uk": "Ghost Chilli"
+                    },
+                    "isCorrect": false,
+                    "points": 0
+                },
+                {
+                    "id": 4,
+                    "description": {
+                        "en": "Carolina Reaper",
+                        "es": "Carolina Reaper",
+                        "ja": "Carolina Reaper",
+                        "uk": "Carolina Reaper"
+                    },
+                    "isCorrect": false,
+                    "points": -3
+                },
+                {
+                    "id": 5,
+                    "description": {
+                        "en": "7 Pot Douglah",
+                        "es": "7 Pot Douglah",
+                        "ja": "7 Pot Douglah",
+                        "uk": "7 Pot Douglah"
+                    },
+                    "isCorrect": false,
+                    "points": -3
+                }
+            ]
+        },
+        {
+            "id": 5,
+            "name": "Hot sauce old",
+            "description": {
+                "en": "About how many years back have humans found evidence of hot sauce?",
+                "es": "About how many years back have humans found evidence of hot sauce?",
+                "ja": "About how many years back have humans found evidence of hot sauce?",
+                "uk": "About how many years back have humans found evidence of hot sauce?"
+            },
+            "options": [
+                {
+                    "id": 1,
+                    "description": {
+                        "en": "200 years",
+                        "es": "200 years",
+                        "ja": "200 years",
+                        "uk": "200 years"
+                    },
+                    "isCorrect": false,
+                    "points": -1
+                },
+                {
+                    "id": 2,
+                    "description": {
+                        "en": "1200 Years",
+                        "es": "1200 Years",
+                        "ja": "1200 Years",
+                        "uk": "1200 Years"
+                    },
+                    "isCorrect": false,
+                    "points": 0
+                },
+                {
+                    "id": 3,
+                    "description": {
+                        "en": "2400 Years",
+                        "es": "2400 Years",
+                        "ja": "2400 Years",
+                        "uk": "2400 Years"
+                    },
+                    "isCorrect": true,
+                    "points": 2
+                },
+                {
+                    "id": 4,
+                    "description": {
+                        "en": "5020 Years",
+                        "es": "5020 Years",
+                        "ja": "5020 Years",
+                        "uk": "5020 Years"
+                    },
+                    "isCorrect": false,
+                    "points": -1
+                },
+                {
+                    "id": 5,
+                    "description": {
+                        "en": "12420 Years",
+                        "es": "12420 Years",
+                        "ja": "12420 Years",
+                        "uk": "12420 Years"
+                    },
+                    "isCorrect": false,
+                    "points": -2
+                }
+            ]
+        }
+    ]
+}

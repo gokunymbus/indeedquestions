@@ -1,24 +1,23 @@
-import de from './de.json';
 import en from './en.json';
 import es from './es.json';
-import fr from './fr.json';
+import uk from './uk.json';
 import ja from './ja.json';
-import ko from './ko.json';
 
 const languageData: any = {
-    de,
     en,
     es,
-    fr,
-    ja,
-    ko
+    uk,
+    ja
+}
+
+export interface languageObject {
+    [name: string]: string
 }
 
 const defaultLanguageCode = "en";
-
 export function getLanguageCode(): string {
     const lang = navigator.language;
-    let foundCode;
+    let foundCode: string;
 
     switch (true) {
         case /^en\b/.test(lang):
@@ -48,5 +47,4 @@ export function getLanguageCode(): string {
 export function getLanguageData(): object {
    const languageCode = getLanguageCode();
    return languageData[languageCode];
-   
 }
