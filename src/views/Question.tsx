@@ -2,15 +2,18 @@ import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
 import styled from 'styled-components';
-import IQuestion from '../library/IQuestion';
+import IQuestion, { IQuestionOption } from '../library/IQuestion';
 import useWithParams from '../library/useWithParams';
-import IQuiz from '../library/Quiz';
+import IQuiz, { IQuizPosition } from '../library/Quiz';
+import replaceStringTokens from '../library/replaceStringTokens';
+import { Link } from 'react-router-dom';
+import AppRoutes from '../library/AppRoutes';
 
 interface IQuestionProps {
     onNext: () => void;
     language: any;
     quiz: IQuiz;
-    questionID?: number;
+    questionID: number;
     languageCode: string;
 }
 
@@ -39,11 +42,62 @@ class Question extends React.Component<IQuestionProps, {}> {
         super(props);
     }
 
+    onSubmitAnswer = () => {
+        
+    }
+
+    onComplete
+     = () => {
+
+    }
+
     renderNotFound() {
         return(
             <QuestionStyled>
                Question Not Found!
             </QuestionStyled>        
+        )
+    }
+
+    renderCompleteQuizButton() {
+        const {
+            completeQuizButton
+        } = this.props.language;
+        return (
+            <BigButton onClick={this.onComplete}>
+                {completeQuizButton}
+            </BigButton>
+        )
+    }
+
+    renderSubmitAnswerButton() {
+        const {
+            submitAnswerButton
+        } = this.props.language;
+        return (
+            <BigButton onClick={this.onSubmitAnswer}>
+                {submitAnswerButton}
+            </BigButton>
+        )
+    }
+
+    renderNextButton() {
+        const {
+            language,
+            questionID,
+            quiz
+        } = this.props;
+        const {
+            submitAnswerButton
+        } = this.props.language;
+        const nextQuestion = quiz.getNextQuestion(questionID);
+
+        return (
+            <Link to={`${AppRoutes.question}/${nextQuestion?.id}`}>
+                <BigButton onClick={() =>{}}>
+                    {submitAnswerButton}
+                </BigButton>
+            </Link>
         )
     }
 
@@ -57,24 +111,45 @@ class Question extends React.Component<IQuestionProps, {}> {
         } = this.props;
 
         const {
-            nextQuestionButton
+            nextQuestionButton,
+            questionPosition,
+            currentScore
         } = language;
 
-        const question: IQuestion | undefined = quiz.getQuestionByID(questionID!);
+        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
+        const positions: IQuizPosition = quiz.getQuestionPosititon(questionID!)
+        const position:string = replaceStringTokens(
+            questionPosition,
+            [positions.current, positions.total]
+        );
+    
+        const score = quiz.getScore();
+        const description = question?.description[languageCode];
+        const nextQuestion = quiz.getNextQuestion(questionID!);
 
         return(
             <QuestionStyled>
                 <HeaderContainerStyled>
-                    <HeaderTitleStyled>{}</HeaderTitleStyled>
-                    <HeaderTitleStyled>Score 0</HeaderTitleStyled>
+                    <HeaderTitleStyled>{position}</HeaderTitleStyled>
+                    <HeaderTitleStyled>{`${currentScore} ${score}`}</HeaderTitleStyled>
                 </HeaderContainerStyled>
                 <div>
                     <QuestionTitleStyled>
-                        {question?.description[languageCode]}
+                        {description}
                     </QuestionTitleStyled>
                 </div>
+                <ul>
+                    {question.options.map((option: IQuestionOption) => {
+                        return (
+                            <li>
+                                <input type="checkbox" />
+                                {option.description[languageCode]}
+                            </li>
+                        )
+                    })}
+                </ul>
                 <div>
-                    <BigButton onClick={onNext}>{nextQuestionButton}</BigButton>
+
                 </div>
             </QuestionStyled>        
         )
@@ -82,7 +157,8 @@ class Question extends React.Component<IQuestionProps, {}> {
 
     render(): ReactNode {
         const {quiz, questionID} = this.props;
-        return  ((quiz.getQuestionByID(questionID!)) ? this.renderQuestion() : this.renderNotFound())
+        return  ((quiz.getQuestionByID(questionID!))
+            ? this.renderQuestion() : this.renderNotFound())
     }
 }
 

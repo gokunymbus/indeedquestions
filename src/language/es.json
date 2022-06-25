@@ -1,4 +1,6 @@
 {
     "startButton": "Start!",
-    "nextQuestionButton": "Next Question"
+    "nextQuestionButton": "Next Question",
+    "questionPosition": "Question {0} of {1}",
+    "currentScore": "Score"
 }
