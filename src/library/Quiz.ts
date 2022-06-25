@@ -1,6 +1,6 @@
 import IQuestion, { IQuestionAnswered } from "./IQuestion";
 
-interface IQuizPosition {
+export interface IQuizPosition {
     current: number;
     total: number
 }
@@ -17,7 +17,7 @@ export interface IQuiz {
     getQuestionPosititon(questionID: number): IQuizPosition;
     getQuestionByID(questionID: number): IQuestion | undefined;
     /** Returns first or next question in the list */
-    getNextQuestion(): IQuestion | undefined;
+    getNextQuestion(currentQuestionID: number): IQuestion | undefined;
     getFirstQuestionID(): number;
 }
 
@@ -42,11 +42,21 @@ export default class Quiz implements IQuiz {
         return 1;
     }
 
-    getQuestionPosititon(): IQuizPosition {
+    getQuestionPosititon(questionID: number): IQuizPosition {
+        const questionIndex = this.getQuestionIndexByID(questionID);
         return {
-            current: 1,
-            total: 10
+            current: questionIndex + 1,
+            total: this.questions.length
         }
+    }
+
+    getQuestionIndexByID(questionID: number): number {
+        return this.questions.reduce((previosValue, question, index) => {
+            if (question.id == questionID) {
+                return previosValue + index;
+            }
+            return previosValue;        
+        }, 0);
     }
 
     getQuestionByID(questionID: number): IQuestion | undefined {
@@ -57,16 +67,13 @@ export default class Quiz implements IQuiz {
         return this.questions[0].id;
     }
 
-    getNextQuestion(): IQuestion | undefined {
-        if (!this.answeredQuestions) {
-            return this.questions[0];
+    getNextQuestion(currentQuestionID: number): IQuestion | undefined {
+        const currentQuestionIndex = this.getQuestionIndexByID(currentQuestionID);
+        const nextQuestionIndex = currentQuestionIndex + 1;
+        if (nextQuestionIndex in this.questions) {
+            return this.questions[nextQuestionIndex];
         }
-
-        this.currentQuestionIndex += 1;
-        if (this.currentQuestionIndex in this.questions) {
-            return  this.questions[this.currentQuestionIndex];
-        }
-
+    
         return undefined;
     }
 }

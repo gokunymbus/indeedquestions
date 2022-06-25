@@ -1,5 +1,4 @@
 /** @jsxImportSource @emotion/react */
-import { ReactComponent as Logo } from "./IndeedLogo.svg";
 import React from 'react';
 import {getLanguageCode, getLanguageData} from './language/language';
 import Home from "./views/Home";
@@ -11,6 +10,7 @@ import Quiz, { IQuiz, IQuizData } from './library/Quiz';
 import IQuestion from "./library/IQuestion";
 import { fetchQuizes } from "./library/FetchQuizData";
 import Loading from "./views/Loading";
+import AppRoutes from './library/AppRoutes';
 
 // Data
 const languageData = getLanguageData();
@@ -64,13 +64,7 @@ export default class App extends React.Component<any, AppState> {
       this.setState({
         isQuizDataLoaded: true
       });
-    
-      console.log(this._quiz);
     })
-  }
-
-  componentDidUpdate(prevProps: any, prevState: AppState) {
-    console.log("AYY")
   }
   
   renderLoading() {
@@ -83,18 +77,17 @@ export default class App extends React.Component<any, AppState> {
       <HashRouter>
         <Routes>
           <Route
-            path="/"
+            path={AppRoutes.home}
             element={
               <Home
                 onStart={this.onStart}
                 language={languageData}
-                linkTo={`/question/${this._quiz?.getFirstQuestionID()}`}
+                linkTo={`${AppRoutes.question}/${this._quiz?.getFirstQuestionID()}`}
               />
             }
           />
-
           <Route
-            path="/question/:questionID"
+            path={`${AppRoutes.question}/:questionID`}
             element={
               <Question
                 onNext={this.onNext}
