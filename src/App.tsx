@@ -8,7 +8,7 @@ import { createGlobalStyle } from 'styled-components'
 import { HashRouter, Routes, Route, useNavigate } from "react-router-dom";
 import Quiz, { IQuiz, IQuizData } from './library/Quiz';
 import IQuestion from "./library/IQuestion";
-import { fetchQuizes } from "./library/FetchQuizData";
+import { fetchQuizes } from "./library/QuizData";
 import Loading from "./views/Loading";
 import AppRoutes from './library/AppRoutes';
 

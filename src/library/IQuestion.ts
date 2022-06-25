@@ -1,5 +1,10 @@
 import { languageObject } from '../language/language';
 
+export enum QuestionType {
+    MULTI = <any>"multi",
+    SINGLE = <any>"single"
+}
+
 export interface IQuestionOption {
     id: number;
     description: languageObject;
@@ -10,6 +15,7 @@ export interface IQuestionOption {
 export default interface IQuestion {
     id: number;
     name: string;
+    type: string;
     description: languageObject;
     options: IQuestionOption[];
 }

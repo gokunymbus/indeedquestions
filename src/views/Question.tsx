@@ -2,12 +2,13 @@ import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
 import styled from 'styled-components';
-import IQuestion, { IQuestionOption } from '../library/IQuestion';
+import IQuestion, { IQuestionOption, QuestionType } from '../library/IQuestion';
 import useWithParams from '../library/useWithParams';
 import IQuiz, { IQuizPosition } from '../library/Quiz';
 import replaceStringTokens from '../library/replaceStringTokens';
 import { Link } from 'react-router-dom';
 import AppRoutes from '../library/AppRoutes';
+import {RadioGroup, IRadioGroupItem} from '../components/RadioGroup';
 
 interface IQuestionProps {
     onNext: () => void;
@@ -46,9 +47,16 @@ class Question extends React.Component<IQuestionProps, {}> {
         
     }
 
-    onComplete
-     = () => {
+    onComplete = () => {
 
+    }
+
+    onItemSelected = (id: number, data: IQuestion) => {
+        console.log(data, "select");
+    }
+
+    onItemDeselected = (id: number, data: IQuestion) => {
+        console.log(data, "deselect");
     }
 
     renderNotFound() {
@@ -101,6 +109,40 @@ class Question extends React.Component<IQuestionProps, {}> {
         )
     }
 
+    renderCheckboxes() {
+        return (
+            <div></div>
+        );
+    }
+
+    renderRadioGroup() {
+        const {
+            quiz,
+            questionID,
+            languageCode
+        } = this.props;
+
+        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
+        const selectionItemMap = question.options.map((option) => {
+            const newMap: IRadioGroupItem = {
+                label: option.description[languageCode],
+                id: option.id,
+                data: option
+            };
+            return newMap
+        });
+
+        return(
+            <RadioGroup
+                items={selectionItemMap}
+                onChange={() => {
+                    console.log("ayy111")
+                }}
+                groupName={question.name.split(' ').join('')}
+            />
+        )
+    }
+
     renderQuestion() {
         const {
             onNext,
@@ -138,16 +180,13 @@ class Question extends React.Component<IQuestionProps, {}> {
                         {description}
                     </QuestionTitleStyled>
                 </div>
-                <ul>
-                    {question.options.map((option: IQuestionOption) => {
-                        return (
-                            <li>
-                                <input type="checkbox" />
-                                {option.description[languageCode]}
-                            </li>
-                        )
-                    })}
-                </ul>
+                <div>
+                    {
+                        (question.type == QuestionType.MULTI.toString())
+                            ? this.renderCheckboxes()
+                            : this.renderRadioGroup()
+                    }
+                </div>
                 <div>
 
                 </div>
@@ -157,8 +196,11 @@ class Question extends React.Component<IQuestionProps, {}> {
 
     render(): ReactNode {
         const {quiz, questionID} = this.props;
-        return  ((quiz.getQuestionByID(questionID!))
-            ? this.renderQuestion() : this.renderNotFound())
+        return (
+            (quiz.getQuestionByID(questionID!))
+                ? this.renderQuestion()
+                : this.renderNotFound()
+        )
     }
 }
 

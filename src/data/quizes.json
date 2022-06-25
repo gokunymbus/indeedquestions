@@ -5,6 +5,7 @@
         {
             "id": 1,
             "name": "Hot sauce branch",
+            "type": "single",
             "description": {
                 "en": "Which brand of hot sauce is the oldest?",
                 "es": "Which brand of hot sauce is the oldest?",
@@ -61,6 +62,7 @@
         {
             "id": 2,
             "name": "Ingredients",
+            "type": "multi",
             "description": {
                 "en": "What ingredients are commonly found in hotsauces?",
                 "es": "What ingredients are commonly found in hotsauces?",
@@ -113,7 +115,7 @@
                     "points": -2
                 },
                 {
-                    "id": 4,
+                    "id": 5,
                     "description": {
                         "en": "Apples",
                         "es": "Apples",
@@ -128,6 +130,7 @@
         {
             "id": 3,
             "name": "Carribean ingredients",
+            "type": "multi",
             "description": {
                 "en": "What two ingredients are most commonly used in Carribean hot sauces?",
                 "es": "What two ingredients are most commonly used in Carribean hot sauces?",
@@ -206,6 +209,7 @@
         {
             "id": 4,
             "name": "UK hot sauces",
+            "type": "multi",
             "description": {
                 "en": "The United Kingdom is home to which of the two hotest peppers in the world?",
                 "es": "The United Kingdom is home to which of the two hotest peppers in the world?",
@@ -273,6 +277,7 @@
         {
             "id": 5,
             "name": "Hot sauce old",
+            "type": "single",
             "description": {
                 "en": "About how many years back have humans found evidence of hot sauce?",
                 "es": "About how many years back have humans found evidence of hot sauce?",
