@@ -19,8 +19,3 @@ export default interface IQuestion {
     description: languageObject;
     options: IQuestionOption[];
 }
-
-export interface ISelectedAnswer {
-    answerID: number;
-    questionID: number;
-}

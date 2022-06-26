@@ -2,15 +2,15 @@
 import React from 'react';
 import {getLanguageCode, getLanguageData} from './language/language';
 import Home from "./views/Home";
-import Question from "./views/Question";
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components'
 import { HashRouter, Routes, Route, useNavigate } from "react-router-dom";
-import Quiz, { IQuiz, IQuizData } from './library/Quiz';
+import QuizModel, { IQuizModel, IQuizData } from './library/QuizModel';
 import IQuestion from "./library/IQuestion";
 import { fetchQuizes } from "./library/QuizData";
 import Loading from "./views/Loading";
 import AppRoutes from './library/AppRoutes';
+import Quiz from './views/Quiz';
 
 // Data
 const languageData = getLanguageData();
@@ -37,7 +37,7 @@ interface AppState {
 }
 
 export default class App extends React.Component<any, AppState> {
-  private _quiz: IQuiz | undefined;
+  private _quiz: IQuizModel | undefined;
   constructor(props: any) {
     super(props);
     this.state = {
@@ -60,7 +60,7 @@ export default class App extends React.Component<any, AppState> {
   componentDidMount() {
     const responsePromise = fetchQuizes();
     responsePromise.then((quizData) => {
-      this._quiz = new Quiz(quizData);
+      this._quiz = new QuizModel(quizData);
       this.setState({
         isQuizDataLoaded: true
       });
@@ -89,7 +89,7 @@ export default class App extends React.Component<any, AppState> {
           <Route
             path={`${AppRoutes.question}/:questionID`}
             element={
-              <Question
+              <Quiz
                 onNext={this.onNext}
                 language={languageData}
                 languageCode={languageCode}

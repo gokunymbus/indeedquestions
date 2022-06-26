@@ -1,8 +1,13 @@
 {
     "startButton": "Start!",
+    "backButton": "Back",
+    "backToStart": "Back To Start",
     "nextQuestionButton": "Next Question",
     "submitAnswerButton": "Submit Answer",
     "completeQuizButton": "Complete Quiz",
+    "errorNoOptionSelected": "No option selected!",
+    "errorWrongAnswers": "Oh no, wrong answer(s)!",
+    "answerCorrect": "Yay, you got it right!",
     "questionPosition": "Question {0} of {1}",
     "currentScore": "Score"
 }

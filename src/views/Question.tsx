@@ -1,137 +1,76 @@
 import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
-import styled from 'styled-components';
+import { Link } from "react-router-dom";
 import IQuestion, { IQuestionOption, QuestionType } from '../library/IQuestion';
-import useWithParams from '../library/useWithParams';
-import IQuiz, { IQuizPosition } from '../library/Quiz';
-import replaceStringTokens from '../library/replaceStringTokens';
-import { Link } from 'react-router-dom';
-import AppRoutes from '../library/AppRoutes';
+import styled from 'styled-components';
 import {RadioGroup, IRadioGroupItem} from '../components/RadioGroup';
 import Checkbox from '../components/Checkbox';
+import { ISelectedAnswer } from '../library/QuizModel';
 
 interface IQuestionProps {
-    onNext: () => void;
-    language: any;
-    quiz: IQuiz;
-    questionID: number;
-    languageCode: string;
+   question: IQuestion;
+   languageCode: string;
+   language: any;
+   onAnswersUpdated: (answers: ISelectedAnswer[]) => void;
+   errorMessage?: string;
+   successMessage?: string;
 }
 
-const QuestionStyled = styled.div`
-    width: 100%;
-    height: auto;
-`;
-
-const HeaderContainerStyled = styled.div`
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const HeaderTitleStyled = styled.h2`
-    font-size: 18px;
-`;
+interface IQuestionState {
+    answers: ISelectedAnswer[]
+}
 
 const QuestionTitleStyled = styled.h3`
     font-size: 16px;
 `;
 
-class Question extends React.Component<IQuestionProps, {}> {
+export default class Question extends React.Component<IQuestionProps, IQuestionState> {
     constructor(props: IQuestionProps) {
         super(props);
     }
 
-    onSubmitAnswer = () => {
-        
-    }
-
-    onComplete = () => {
-
-    }
-
     onRadioGroupChange(option: IQuestionOption) {
-        const { quiz, questionID } = this.props;
-        quiz.addGroupAnswer(questionID, option);
+        const { question, onAnswersUpdated } = this.props;
+        const answers = [{
+            option,
+            questionID: question.id
+        }];
+
+        onAnswersUpdated(answers)
+        this.setState({
+            answers
+        });
     }
 
     onCheckboxChange(option: IQuestionOption, isChecked: boolean) {
-        const { quiz, questionID } = this.props;
+        const { question, onAnswersUpdated } = this.props;
+        const { answers } = this.state;
         if (isChecked) {
-            quiz.addAnswer(questionID, option);
+            const newAnswers = answers.concat({
+                option,
+                questionID: question.id
+            });
+            onAnswersUpdated(newAnswers);
+            this.setState({
+                answers: newAnswers
+            });
             return;
         }
 
-        quiz.removeAnswer(questionID, option);
-    }
-
-    onItemSelected = (id: number, data: IQuestion) => {
-        console.log(data, "select");
-    }
-
-    onItemDeselected = (id: number, data: IQuestion) => {
-        console.log(data, "deselect");
-    }
-
-    renderNotFound() {
-        return(
-            <QuestionStyled>
-               Question Not Found!
-            </QuestionStyled>        
-        )
-    }
-
-    renderCompleteQuizButton() {
-        const {
-            completeQuizButton
-        } = this.props.language;
-        return (
-            <BigButton onClick={this.onComplete}>
-                {completeQuizButton}
-            </BigButton>
-        )
-    }
-
-    renderSubmitAnswerButton() {
-        const {
-            submitAnswerButton
-        } = this.props.language;
-        return (
-            <BigButton onClick={this.onSubmitAnswer}>
-                {submitAnswerButton}
-            </BigButton>
-        )
-    }
-
-    renderNextButton() {
-        const {
-            language,
-            questionID,
-            quiz
-        } = this.props;
-        const {
-            submitAnswerButton
-        } = this.props.language;
-        const nextQuestion = quiz.getNextQuestion(questionID);
-
-        return (
-            <Link to={`${AppRoutes.question}/${nextQuestion?.id}`}>
-                <BigButton onClick={() =>{}}>
-                    {submitAnswerButton}
-                </BigButton>
-            </Link>
-        )
+        // Remove option from state
+        const filteredAnswers = answers.filter((a) => a.option.id !== option.id);
+        onAnswersUpdated(filteredAnswers);
+        this.setState({
+            answers: filteredAnswers
+        })
     }
 
     renderCheckboxes() {
         const {
-            quiz,
-            questionID,
+            question,
             languageCode
         } = this.props;
-        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
         const {options} = question;
         return (
             <div>
@@ -161,12 +100,10 @@ class Question extends React.Component<IQuestionProps, {}> {
 
     renderRadioGroup() {
         const {
-            quiz,
-            questionID,
+            question,
             languageCode
         } = this.props;
 
-        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
         const selectionItemMap = question.options.map((option) => {
             const newMap: IRadioGroupItem = {
                 label: option.description[languageCode],
@@ -187,41 +124,15 @@ class Question extends React.Component<IQuestionProps, {}> {
         )
     }
 
-    renderQuestion() {
-        const {
-            onNext,
-            language,
-            quiz,
-            questionID,
-            languageCode
-        } = this.props;
+    render(): ReactNode {
+        const { question, languageCode } = this.props;
+        const {description} = question;
 
-        const {
-            nextQuestionButton,
-            questionPosition,
-            currentScore
-        } = language;
-
-        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
-        const positions: IQuizPosition = quiz.getQuestionPosititon(questionID!)
-        const position:string = replaceStringTokens(
-            questionPosition,
-            [positions.current, positions.total]
-        );
-    
-        const score = quiz.getScore();
-        const description = question?.description[languageCode];
-        const nextQuestion = quiz.getNextQuestion(questionID!);
-
-        return(
-            <QuestionStyled>
-                <HeaderContainerStyled>
-                    <HeaderTitleStyled>{position}</HeaderTitleStyled>
-                    <HeaderTitleStyled>{`${currentScore} ${score}`}</HeaderTitleStyled>
-                </HeaderContainerStyled>
+        return  (
+            <div>
                 <div>
                     <QuestionTitleStyled>
-                        {description}
+                        {description[languageCode]}
                     </QuestionTitleStyled>
                 </div>
                 <div>
@@ -231,21 +142,8 @@ class Question extends React.Component<IQuestionProps, {}> {
                             : this.renderRadioGroup()
                     }
                 </div>
-                <div>
-
-                </div>
-            </QuestionStyled>        
+            </div>
         )
     }
-
-    render(): ReactNode {
-        const {quiz, questionID} = this.props;
-        return (
-            (quiz.getQuestionByID(questionID!))
-                ? this.renderQuestion()
-                : this.renderNotFound()
-        )
-    }
+       
 }
-
-export default useWithParams(Question);

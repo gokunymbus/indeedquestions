@@ -48,7 +48,7 @@ class RadioButton extends React.Component<RadioButtonProps, {}> {
             checked,
             index
         } = this.props;
-
+        console.log(checked, "FORM FFF")
         return (
             <RadioContainerStyled
                 tabIndex={0}
@@ -67,7 +67,6 @@ class RadioButton extends React.Component<RadioButtonProps, {}> {
                     name={`${groupName}`}
                     tabIndex={-1}
                     onChange={() => {}}
-                    defaultChecked={false}
                     checked={checked}
                 />
                 <RadioLabelStyled
@@ -90,17 +89,16 @@ export interface IRadioGroupProps {
     items: IRadioGroupItem[];
     onChange(index: number): void;
     groupName: string;
+    selectedIndex?: number;
 }
-
-const RadioGroupStyled = styled.div`
-    padding: 8px;
-    width: 100%;
-`;
 
 export class RadioGroup extends React.Component<IRadioGroupProps, {activeIndex: number}> {
     constructor(props: IRadioGroupProps) {
         super(props);
-        this.state = {activeIndex: 0};
+        if (props.selectedIndex) {
+            this.state = {activeIndex: props.selectedIndex}
+        }
+        this.state = {activeIndex: -1}; // D
     }
 
     onChangeHandler = (index: number) => {
