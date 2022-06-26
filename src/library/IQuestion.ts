@@ -20,6 +20,7 @@ export default interface IQuestion {
     options: IQuestionOption[];
 }
 
-export interface IQuestionAnswered extends IQuestion {
-    selectedOptionIDs: number[]
+export interface ISelectedAnswer {
+    answerID: number;
+    questionID: number;
 }

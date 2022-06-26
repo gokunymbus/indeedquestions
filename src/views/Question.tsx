@@ -9,6 +9,7 @@ import replaceStringTokens from '../library/replaceStringTokens';
 import { Link } from 'react-router-dom';
 import AppRoutes from '../library/AppRoutes';
 import {RadioGroup, IRadioGroupItem} from '../components/RadioGroup';
+import Checkbox from '../components/Checkbox';
 
 interface IQuestionProps {
     onNext: () => void;
@@ -49,6 +50,21 @@ class Question extends React.Component<IQuestionProps, {}> {
 
     onComplete = () => {
 
+    }
+
+    onRadioGroupChange(option: IQuestionOption) {
+        const { quiz, questionID } = this.props;
+        quiz.addGroupAnswer(questionID, option);
+    }
+
+    onCheckboxChange(option: IQuestionOption, isChecked: boolean) {
+        const { quiz, questionID } = this.props;
+        if (isChecked) {
+            quiz.addAnswer(questionID, option);
+            return;
+        }
+
+        quiz.removeAnswer(questionID, option);
     }
 
     onItemSelected = (id: number, data: IQuestion) => {
@@ -110,8 +126,36 @@ class Question extends React.Component<IQuestionProps, {}> {
     }
 
     renderCheckboxes() {
+        const {
+            quiz,
+            questionID,
+            languageCode
+        } = this.props;
+        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
+        const {options} = question;
         return (
-            <div></div>
+            <div>
+                {
+                    options.map((option, index) => {
+                        const {
+                            id,
+                            description
+                        } = option;
+
+                        return(
+                            <Checkbox
+                                id={id}
+                                label={description[languageCode]}
+                                onChange={(index, isChecked) => {
+                                    this.onCheckboxChange(option, isChecked)
+                                }}
+                                defaultChecked={false}
+                                index={index}
+                            />
+                        )
+                    })
+                }
+            </div>
         );
     }
 
@@ -135,8 +179,8 @@ class Question extends React.Component<IQuestionProps, {}> {
         return(
             <RadioGroup
                 items={selectionItemMap}
-                onChange={() => {
-                    console.log("ayy111")
+                onChange={(index) => {
+                    this.onRadioGroupChange(question.options[index])
                 }}
                 groupName={question.name.split(' ').join('')}
             />

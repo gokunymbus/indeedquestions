@@ -12,9 +12,7 @@ interface RadioButtonProps {
 
 const RadioButtonStyled = styled.input.attrs({
     type: "radio",
-})`
-
-`;
+})``;
 
 const RadioContainerStyled = styled.div`
     padding: 8px;
@@ -30,35 +28,47 @@ class RadioButton extends React.Component<RadioButtonProps, {}> {
         super(props);
     }
 
+    onChangeHandler() {
+        const {
+            index,
+            onChange,
+            checked
+        } = this.props;
+
+        if (!checked) {
+            onChange(index);
+        }
+    }
+
     render() {
         const {
             id,
             label,
             groupName,
-            index,
-            onChange,
-            checked
+            checked,
+            index
         } = this.props;
 
         return (
             <RadioContainerStyled
                 tabIndex={0}
                 onClick={(e) => {
-                    onChange(index);
+                    this.onChangeHandler();
                 }}  
                 onKeyUp={(e) => {
                     if (e.key !== "Enter" && e.key !== " ") {
                         return;
                     }
-                    onChange(index);
+                    this.onChangeHandler();
                 }}
             >
                 <RadioButtonStyled
                     id={`${id}`}
                     name={`${groupName}`}
                     tabIndex={-1}
-                    checked={checked}
+                    onChange={() => {}}
                     defaultChecked={false}
+                    checked={checked}
                 />
                 <RadioLabelStyled
                     htmlFor={`${id}`}
@@ -78,7 +88,7 @@ export interface IRadioGroupItem {
 
 export interface IRadioGroupProps {
     items: IRadioGroupItem[];
-    onChange(id: number, data: object): void;
+    onChange(index: number): void;
     groupName: string;
 }
 
@@ -94,22 +104,22 @@ export class RadioGroup extends React.Component<IRadioGroupProps, {activeIndex: 
     }
 
     onChangeHandler = (index: number) => {
+        const {onChange} = this.props;
         this.setState({activeIndex: index})
+        onChange(index);
     }
 
     render() {
         const {items} = this.props;
-        return  (
-            <RadioGroupStyled>
-                {items.map((item, index) =>
-                    <RadioButton
-                        {...item}
-                        onChange={this.onChangeHandler}
-                        index={index}
-                        checked={index === this.state.activeIndex}
-                    />
-                )}
-            </RadioGroupStyled>
+        return items.map((item, index) =>
+            <RadioButton
+                {...item}
+                onChange={this.onChangeHandler}
+                index={index}
+                checked={index === this.state.activeIndex}
+                key={index}
+            />
         )
+        
     }
 }
