@@ -48,7 +48,6 @@ class RadioButton extends React.Component<RadioButtonProps, {}> {
             checked,
             index
         } = this.props;
-        console.log(checked, "FORM FFF")
         return (
             <RadioContainerStyled
                 tabIndex={0}

@@ -2,21 +2,25 @@ import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
 import styled from 'styled-components';
-import IQuestion, { IQuestionOption, QuestionType } from '../library/IQuestion';
+import IQuestion from '../library/IQuestion';
 import useWithParams from '../library/useWithParams';
-import IQuiz, { IQuizPosition, GradeResponses } from '../library/QuizModel';
+import { IQuizPosition, IQuizData, getScore } from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
 import { Link } from 'react-router-dom';
 import AppRoutes from '../library/AppRoutes';
 import Question from './Question';
-import { ISelectedAnswer } from '../library/QuizModel';
 
-interface IQuestionProps {
-    onNext: () => void;
+interface IQuizProps {
     language: any;
-    quiz: IQuiz;
+    data: IQuizData;
     questionID: number;
     languageCode: string;
+    onComplete: (questions: IQuestion[]) => void
+}
+
+interface IQuizState {
+    questions: IQuestion[];
+    currentQuestionID: number;
 }
 
 const QuestionStyled = styled.div`
@@ -35,30 +39,87 @@ const HeaderTitleStyled = styled.h2`
     font-size: 18px;
 `;
 
-class Quiz extends React.Component<IQuestionProps, {}> {
-    private activeAnswers: ISelectedAnswer[] = [];
-    constructor(props: IQuestionProps) {
+class Quiz extends React.Component<IQuizProps, IQuizState> {
+    constructor(props: IQuizProps) {
         super(props);
-        const { quiz, questionID} = this.props;
+        const { data } = props;
         this.state = {
-            message: undefined,
-            question: quiz.getQuestionByID(questionID)!
+            questions: data.questions,
+            currentQuestionID: data.questions[0].id
         }
     }
 
-    onSubmitAnswer = () => {
-        const { quiz, questionID, language } = this.props;
-        const {
-            errorNoOptionSelected,
-            errorWrongAnswers,
-            answerCorrect
-        } = language;
-        const gradeResponse = quiz.gradeQuestion(questionID);
-        this.forceUpdate();
+    updateQuestion(question: IQuestion) {
+        const {questions} = this.state;
+        const newQuestions = questions.map((q) => {
+            if (q.id == question.id) {
+                return {...question }
+            }
+            return q;
+        });
+
+        this.setState({questions: newQuestions});
     }
 
-    onComplete = () => {
+    getScore(): number {
+        const { questions } = this.state;
+        return getScore(questions);
+    }
 
+    getQuestionPosititon(questionID: number): IQuizPosition {
+        const { questions } = this.state;
+        const questionIndex = this.getQuestionIndexByID(questionID);
+        return {
+            current: questionIndex + 1,
+            total: questions.length
+        }
+    }
+
+    getQuestionIndexByID(questionID: number): number {
+        const { questions } = this.state;
+        return questions.reduce((previousValue, question, index) => {
+            if (question.id == questionID) {
+                return previousValue + index;
+            }
+            return previousValue;        
+        }, 0);
+    }
+
+    getQuestionByID(questionID: number): IQuestion | undefined {
+        const { questions } = this.state;
+        return  questions.find((question) => question.id == questionID);
+    }
+
+    getFirstQuestionID() {
+        const { questions } = this.state;
+        return questions[0].id;
+    }
+
+    getNextQuestion(questionID: number): IQuestion | undefined {
+        const { questions } = this.state;
+        const nextQuestionIndex = this.getQuestionIndexByID(questionID) + 1;
+        if (nextQuestionIndex in questions) {
+            return questions[nextQuestionIndex];
+        }
+        return undefined;
+    }
+
+    getPreviousQuestion(questionID: number): IQuestion | undefined {
+        const { questions } = this.state;
+        const prevQuestionIndex = this.getQuestionIndexByID(questionID) - 1;
+        if (prevQuestionIndex in questions) {
+            return questions[prevQuestionIndex];
+        }
+        return undefined;
+    }
+
+    getUnansweredQuestion() {
+        const { questions } = this.state;
+        return  questions.find((question) => !question.answers);
+    }
+
+    onQuestionComplete = (question: IQuestion) => {
+        this.updateQuestion(question);
     }
 
     renderBackToStartButton() {
@@ -67,7 +128,7 @@ class Quiz extends React.Component<IQuestionProps, {}> {
         } = this.props.language;
         return (
             <Link to={AppRoutes.home}>
-                <BigButton onClick={this.onComplete}>
+                <BigButton onClick={() => {}}>
                     {backToStart}
                 </BigButton>
             </Link>
@@ -79,82 +140,12 @@ class Quiz extends React.Component<IQuestionProps, {}> {
             completeQuizButton
         } = this.props.language;
         return (
-            <BigButton onClick={this.onComplete}>
+            <BigButton onClick={() => {
+                const { onComplete } = this.props;
+                onComplete(this.state.questions);
+            }}>
                 {completeQuizButton}
             </BigButton>
-        )
-    }
-
-    renderSubmitAnswerButton() {
-        const {
-            submitAnswerButton
-        } = this.props.language;
-        return (
-            <BigButton onClick={this.onSubmitAnswer}>
-                {submitAnswerButton}
-            </BigButton>
-        )
-    }
-
-    renderNextButton() {
-        const {
-            language,
-            questionID,
-            quiz
-        } = this.props;
-        const {
-            submitAnswerButton
-        } = this.props.language;
-        const nextQuestion = quiz.getNextQuestion(questionID);
-
-        return (
-            <Link to={`${AppRoutes.question}/${nextQuestion?.id}`}>
-                <BigButton onClick={() =>{}}>
-                    {submitAnswerButton}
-                </BigButton>
-            </Link>
-        )
-    }
-
-    
-    renderButton() {
-        const { quiz, questionID } = this.props;
-        const previousQuestion = quiz.getPreviousQuestion(questionID);
-        const nextQuestion = quiz.getNextQuestion(questionID);
-        const alreadyAnswered = quiz.getCompletedQuestionByID(questionID);
-
-        console.log(alreadyAnswered, "already answered");
-
-        return (
-            <div>
-                {previousQuestion
-                    ? this.renderBackButton()
-                    : this.renderBackToStartButton()
-                }
-                {nextQuestion
-                    ? (alreadyAnswered)
-                        ? this.renderNextButton()
-                        : this.renderSubmitAnswerButton()
-                    : (alreadyAnswered)
-                        ? this.renderCompleteQuizButton()
-                        : this.renderSubmitAnswerButton()
-                }
-            </div>
-        )
-    }
-
-    renderBackButton() {
-        const {
-            backButton
-        } = this.props.language;
-        const { questionID, quiz } = this.props;
-        const previousQuestion = quiz.getPreviousQuestion(questionID);
-        return (
-            <Link to={`${AppRoutes.question}/${previousQuestion?.id}`}>
-                <BigButton onClick={this.onComplete}>
-                    {backButton}
-                </BigButton>
-            </Link>
         )
     }
 
@@ -162,46 +153,80 @@ class Quiz extends React.Component<IQuestionProps, {}> {
         return(
             <QuestionStyled>
                Question Not Found!
-            </QuestionStyled>        
+            </QuestionStyled>
         )
     }
 
-    renderMessage() {
-        const { errorMessage, successMessage } = this.props;
+    renderNextButton() {
+        const {
+            language,
+        } = this.props;
+        const {
+            currentQuestionID
+        } = this.state;
+        const {
+            nextQuestionButton
+        } = language;
+        const nextQuestion = this.getNextQuestion(currentQuestionID)!;
         return (
-            <div>
-                {errorMessage && (<div>{errorMessage}</div>)}
-                {successMessage && (<div>{successMessage}</div>)}
-            </div>
+            <BigButton onClick={() =>{
+                this.setState({
+                    currentQuestionID: nextQuestion.id
+                })
+            }}>
+                {nextQuestionButton}
+            </BigButton>
+        )
+    }
+
+    renderBackButton() {
+        const {
+            language
+        } = this.props;
+        const {
+            currentQuestionID
+        } = this.state;
+        const {
+            previousQuestionButton
+        } = language;
+        const previousQuestion = this.getPreviousQuestion(currentQuestionID)!;
+        return (
+            <BigButton onClick={() =>{
+                this.setState({
+                    currentQuestionID: previousQuestion.id
+                })
+            }}>
+                {previousQuestionButton}
+            </BigButton>
         )
     }
 
     renderQuestion() {
         const {
-            onNext,
             language,
-            quiz,
-            questionID,
             languageCode
         } = this.props;
 
         const {
-            nextQuestionButton,
             questionPosition,
             currentScore
         } = language;
 
-        const question: IQuestion = quiz.getQuestionByID(questionID!)!;
-        const positions: IQuizPosition = quiz.getQuestionPosititon(questionID!)
+        const {
+            currentQuestionID
+        } = this.state;
+
+        const question: IQuestion = this.getQuestionByID(currentQuestionID)!;
+        const positions: IQuizPosition = this.getQuestionPosititon(currentQuestionID)
         const position:string = replaceStringTokens(
             questionPosition,
             [positions.current, positions.total]
         );
+        
+        const nextQuestion = this.getNextQuestion(currentQuestionID);
+        const previousQuestion = this.getPreviousQuestion(currentQuestionID);
     
-        const score = quiz.getScore();
-        const description = question?.description[languageCode];
-        const nextQuestion = quiz.getNextQuestion(questionID!);
-
+        const score = this.getScore();
         return(
             <QuestionStyled>
                 <HeaderContainerStyled>
@@ -212,21 +237,27 @@ class Quiz extends React.Component<IQuestionProps, {}> {
                     question={question}
                     languageCode={languageCode}
                     language={language}
-                    onAnswersUpdated={(answers) => {
-                        this.activeAnswers = [...answers];
-                    }}
+                    renderNextButton={
+                        (nextQuestion)
+                            ? this.renderNextButton()
+                            : this.renderCompleteQuizButton()
+                    }
+                    renderBackButton={
+                        (previousQuestion)
+                            ? this.renderBackButton()
+                            : this.renderBackToStartButton()
+                    }
+                    onQuestionCompleted={this.onQuestionComplete}
                 />
-                { this.renderMessage() }
-                { this.renderButton() }
             </QuestionStyled>        
         )
     }
 
     render(): ReactNode {
-        const {quiz, questionID} = this.props;
+        const {currentQuestionID} = this.state;
         return (
-            (quiz.getQuestionByID(questionID!))
-                ? this.renderQuestion()
+            (this.getQuestionByID(currentQuestionID))
+                ? this.renderQuestion() 
                 : this.renderNotFound()
         )
     }

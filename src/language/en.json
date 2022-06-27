@@ -1,6 +1,6 @@
 {
     "startButton": "Start!",
-    "backButton": "Back",
+    "previousQuestionButton": "Previous Question",
     "backToStart": "Back To Start",
     "nextQuestionButton": "Next Question",
     "submitAnswerButton": "Submit Answer",

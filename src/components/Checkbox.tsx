@@ -3,10 +3,10 @@ import React from 'react';
 
 interface CheckboxProps {
     id: number;
+    name: string;
     label: string;
     onChange(index: number, isChecked: boolean): void;
     defaultChecked: boolean;
-    index: number;
 }
 
 const CheckboxStyled = styled.input.attrs({
@@ -30,12 +30,12 @@ export default class Checkbox extends React.Component<CheckboxProps, {isChecked:
 
     onChangeHandler() {
         const {
-            index,
-            onChange
+            onChange,
+            id
         } = this.props;
 
         const isChecked = !this.state.isChecked;
-        onChange(index, isChecked);
+        onChange(id, isChecked);
         this.setState({isChecked})
     }
 
@@ -43,8 +43,7 @@ export default class Checkbox extends React.Component<CheckboxProps, {isChecked:
         const {
             id,
             label,
-            index,
-            
+            name
         } = this.props;
         const {isChecked} = this.state;
 
@@ -60,11 +59,10 @@ export default class Checkbox extends React.Component<CheckboxProps, {isChecked:
                     }
                     this.onChangeHandler();
                 }}
-                key={index}
             >
                 <CheckboxStyled
                     id={`${id}`}
-                    name={`${id}`}
+                    name={`${name}`}
                     tabIndex={-1}
                     onChange={() => {}}
                     checked={isChecked}

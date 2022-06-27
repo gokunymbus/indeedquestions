@@ -4,7 +4,7 @@
     "questions": [
         {
             "id": 1,
-            "name": "Hot sauce branch",
+            "name": "Hot sauce brand",
             "type": "single",
             "description": {
                 "en": "Which brand of hot sauce is the oldest?",

@@ -5,12 +5,13 @@ import Home from "./views/Home";
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components'
 import { HashRouter, Routes, Route, useNavigate } from "react-router-dom";
-import QuizModel, { IQuizModel, IQuizData } from './library/QuizModel';
+import { IQuizData } from './library/QuizModel';
 import IQuestion from "./library/IQuestion";
 import { fetchQuizes } from "./library/QuizData";
 import Loading from "./views/Loading";
 import AppRoutes from './library/AppRoutes';
 import Quiz from './views/Quiz';
+import useWithNavigate from './library/useWithNavigate';
 
 // Data
 const languageData = getLanguageData();
@@ -33,16 +34,13 @@ const AppStyled = styled.div`
 `;
 
 interface AppState {
-  isQuizDataLoaded: boolean;
+  quiz?: IQuizData;
 }
 
-export default class App extends React.Component<any, AppState> {
-  private _quiz: IQuizModel | undefined;
+class App extends React.Component<any, AppState> {
   constructor(props: any) {
     super(props);
-    this.state = {
-      isQuizDataLoaded: false
-    }
+    this.state = {}
   }
 
   onNext = () => {
@@ -60,9 +58,8 @@ export default class App extends React.Component<any, AppState> {
   componentDidMount() {
     const responsePromise = fetchQuizes();
     responsePromise.then((quizData) => {
-      this._quiz = new QuizModel(quizData);
       this.setState({
-        isQuizDataLoaded: true
+        quiz: quizData
       });
     })
   }
@@ -73,6 +70,7 @@ export default class App extends React.Component<any, AppState> {
 
   renderQuiz = () => {
     const languageCode = getLanguageCode();
+    const {quiz} = this.state;
     return (
       <HashRouter>
         <Routes>
@@ -82,20 +80,30 @@ export default class App extends React.Component<any, AppState> {
               <Home
                 onStart={this.onStart}
                 language={languageData}
-                linkTo={`${AppRoutes.question}/${this._quiz?.getFirstQuestionID()}`}
+                linkTo={`${AppRoutes.question}`}
               />
             }
           />
           <Route
-            path={`${AppRoutes.question}/:questionID`}
+            path={`${AppRoutes.question}`}
             element={
               <Quiz
-                onNext={this.onNext}
                 language={languageData}
                 languageCode={languageCode}
-                quiz={this._quiz}
+                data={quiz}
+                onComplete={(questions: IQuestion[]) => {
+                  const { navigate } = this.props;
+                  navigate('/complete');
+                }}
               />
             }
+          />
+          <Route
+            path={`${AppRoutes.complete}`}
+            element={
+            <div>
+              Quiz Completed
+            </div>}
           />
         </Routes>
       </HashRouter>
@@ -103,11 +111,11 @@ export default class App extends React.Component<any, AppState> {
   }
 
   render() {
-    const {isQuizDataLoaded} = this.state;
+    const {quiz} = this.state;
     return (
         <AppStyled>
           <GlobalStyle />
-          {(isQuizDataLoaded)
+          {(quiz)
             ?
               this.renderQuiz()
                 :
@@ -117,3 +125,5 @@ export default class App extends React.Component<any, AppState> {
     );
   }
 }
+
+export default useWithNavigate(App);

@@ -1,5 +1,11 @@
 import { languageObject } from '../language/language';
 
+export enum GradeResponses {
+    ERROR_NO_ANSWERS,
+    FAILED,
+    PASSED
+}
+
 export enum QuestionType {
     MULTI = <any>"multi",
     SINGLE = <any>"single"
@@ -18,4 +24,5 @@ export default interface IQuestion {
     type: string;
     description: languageObject;
     options: IQuestionOption[];
+    answers?: IQuestionOption[];
 }
