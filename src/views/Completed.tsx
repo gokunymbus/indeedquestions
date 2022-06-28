@@ -7,6 +7,7 @@ import replaceStringTokens from '../library/replaceStringTokens';
 interface ICompletedProps {
     language: any;
     languageCode: string;
+    renderPlayAgain: ReactNode;
 }
 
 export default class Completed extends React.Component<ICompletedProps, {}> {
@@ -77,7 +78,14 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
     renderResults() {
         const latestQuiz = this.quizResults![0];
         const {correctQuestions, totalQuestions} = latestQuiz;
-        const { questionsRight } = this.props.language;
+        const {
+            language,
+            renderPlayAgain
+        } = this.props;
+        const {
+            questionsRight,
+            bestScore
+        } = language;
         const questionsRightText = replaceStringTokens(
             questionsRight,
             [
@@ -86,13 +94,42 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
             ]
         )
         const sortedResults = sortResultsByScore(this.quizResults!);
-        console.log(sortedResults);
-        const highestResult = sortedResults[0]
+        const bestPreviousScore = sortedResults[0];
+        const bestScoreDate = new Date(bestPreviousScore.dateCompleted);
+        const bestScoreDateFormatted = `${
+            bestScoreDate.getMonth()
+        }/${
+            bestScoreDate.getDate()
+        }/${
+            bestScoreDate.getFullYear()
+        }`;
+
+        const bestScoreTime = `${
+            bestScoreDate.getHours()
+        }:${
+            bestScoreDate.getMinutes()
+        }`
+
+        const highestResult = replaceStringTokens(
+            bestScore,
+            [
+                bestPreviousScore.correctQuestions,
+                bestPreviousScore.totalQuestions,
+                bestScoreDateFormatted,
+                bestScoreTime
+            ]
+        );
         return(
             <div>
                 {this.getQuizTitle(latestQuiz)}
                 <div>
                     {questionsRightText}
+                </div>
+                <div>
+                    {highestResult}
+                </div>
+                <div>
+                    {renderPlayAgain}
                 </div>
             </div>
         )

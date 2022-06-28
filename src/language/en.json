@@ -12,7 +12,7 @@
     "currentScore": "Score",
     "noQuizCompleted": "Sorry, you haven't completed a quiz!",
     "questionsRight": "You got {0} out of {1} questions right!",
-    "bestScore": "Your best score so far was {0} out of {1} questions which you got on {2}",
+    "bestScore": "Your best score so far was {0} out of {1} questions which you got on {2} at {3}",
     "playAgainButton": "Play again!",
     "didntGetAny": "Oof, didnt get any :(",
     "gotatleastOne": "Well, you got atleast one!",

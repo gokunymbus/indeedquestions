@@ -14,7 +14,7 @@
             },
             "options": [
                 {
-                    "id": 181,
+                    "id": 1,
                     "description": {
                         "en": "El Yucateco",
                         "es": "El Yucateco",
@@ -25,7 +25,7 @@
                     "points": 0
                 },
                 {
-                    "id": 160,
+                    "id": 2,
                     "description": {
                         "en": "Secret Aardvark",
                         "es": "Secret Aardvark",
@@ -36,7 +36,7 @@
                     "points": -1
                 },
                 {
-                    "id": 143,
+                    "id": 3,
                     "description": {
                         "en": "Tapatio",
                         "es": "Tapatio",
@@ -47,7 +47,7 @@
                     "points": 0
                 },
                 {
-                    "id": 198,
+                    "id": 4,
                     "description": {
                         "en": "Tabasco",
                         "es": "Tabasco",
@@ -71,7 +71,7 @@
             },
             "options": [
                 {
-                    "id": 78,
+                    "id": 1,
                     "description": {
                         "en": "Peppers",
                         "es": "Peppers",
@@ -82,7 +82,7 @@
                     "points": 2
                 },
                 {
-                    "id": 176,
+                    "id": 2,
                     "description": {
                         "en": "Vinegar",
                         "es": "Vinegar",
@@ -93,7 +93,7 @@
                     "points": 1
                 },
                 {
-                    "id": 149,
+                    "id": 3,
                     "description": {
                         "en": "Salt",
                         "es": "Salt",
@@ -104,7 +104,7 @@
                     "points": 1
                 },
                 {
-                    "id": 104,
+                    "id": 4,
                     "description": {
                         "en": "Glue",
                         "es": "Glue",
@@ -115,7 +115,7 @@
                     "points": -2
                 },
                 {
-                    "id": 33,
+                    "id": 5,
                     "description": {
                         "en": "Apples",
                         "es": "Apples",
@@ -139,7 +139,7 @@
             },
             "options": [
                 {
-                    "id": 56,
+                    "id": 1,
                     "description": {
                         "en": "Habanero",
                         "es": "Habanero",
@@ -150,7 +150,7 @@
                     "points": 1
                 },
                 {
-                    "id": 36,
+                    "id": 2,
                     "description": {
                         "en": "Thai chilli",
                         "es": "Thai chilli",
@@ -161,7 +161,7 @@
                     "points": -3
                 },
                 {
-                    "id": 97,
+                    "id": 3,
                     "description": {
                         "en": "Jalepeno",
                         "es": "Jalepeno",
@@ -172,7 +172,7 @@
                     "points": -1
                 },
                 {
-                    "id": 44,
+                    "id": 4,
                     "description": {
                         "en": "Bell Pepper",
                         "es": "Bell Pepper",
@@ -183,7 +183,7 @@
                     "points": 0
                 },
                 {
-                    "id": 102,
+                    "id": 5,
                     "description": {
                         "en": "Scotch Bonnet",
                         "es": "Scotch Bonnet",
@@ -194,7 +194,7 @@
                     "points": 3
                 },
                 {
-                    "id": 336,
+                    "id": 6,
                     "description": {
                         "en": "Carribean Fresno",
                         "es": "Carribean Fresno",
@@ -218,7 +218,7 @@
             },
             "options": [
                 {
-                    "id": 665,
+                    "id": 1,
                     "description": {
                         "en": "Naga Viper",
                         "es": "Naga Viper",
@@ -229,7 +229,7 @@
                     "points": 2
                 },
                 {
-                    "id": 667,
+                    "id": 2,
                     "description": {
                         "en": "Infinity Chilli",
                         "es": "Infinity Chilli",
@@ -240,7 +240,7 @@
                     "points": 2
                 },
                 {
-                    "id": 664,
+                    "id": 3,
                     "description": {
                         "en": "Ghost Chilli",
                         "es": "Ghost Chilli",
@@ -251,7 +251,7 @@
                     "points": 0
                 },
                 {
-                    "id": 440,
+                    "id": 4,
                     "description": {
                         "en": "Carolina Reaper",
                         "es": "Carolina Reaper",
@@ -262,7 +262,7 @@
                     "points": -3
                 },
                 {
-                    "id": 225,
+                    "id": 5,
                     "description": {
                         "en": "7 Pot Douglah",
                         "es": "7 Pot Douglah",
@@ -286,7 +286,7 @@
             },
             "options": [
                 {
-                    "id": 112,
+                    "id": 1,
                     "description": {
                         "en": "200 years",
                         "es": "200 years",
@@ -297,7 +297,7 @@
                     "points": -1
                 },
                 {
-                    "id":151,
+                    "id": 2,
                     "description": {
                         "en": "1200 Years",
                         "es": "1200 Years",
@@ -308,7 +308,7 @@
                     "points": 0
                 },
                 {
-                    "id": 141,
+                    "id": 3,
                     "description": {
                         "en": "2400 Years",
                         "es": "2400 Years",
@@ -319,7 +319,7 @@
                     "points": 2
                 },
                 {
-                    "id": 190,
+                    "id": 4,
                     "description": {
                         "en": "5020 Years",
                         "es": "5020 Years",
@@ -330,7 +330,7 @@
                     "points": -1
                 },
                 {
-                    "id": 1900,
+                    "id": 5,
                     "description": {
                         "en": "12420 Years",
                         "es": "12420 Years",

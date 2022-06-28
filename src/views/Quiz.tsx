@@ -2,26 +2,29 @@ import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
 import styled from 'styled-components';
-import IQuestion, { IQuestionOption } from '../library/IQuestion';
 import useWithParams from '../library/useWithParams';
-import { IQuizPosition, IQuizData, getScore, getCorrectQuestions } from '../library/QuizModel';
+import {
+    IQuizPosition,
+    IQuizData,
+    getScore,
+    IQuestion,
+    IQuestionOption,
+    IAnsweredQuestion
+} from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
-import { Link } from 'react-router-dom';
-import AppRoutes from '../library/AppRoutes';
 import Question from './Question';
 
 interface IQuizProps {
     language: any;
     data: IQuizData;
-    questionID: number;
     languageCode: string;
-    onComplete: (questions: IQuestion[]) => void
+    onComplete: (questions: IAnsweredQuestion[]) => void
     renderCompleteButton: ReactNode;
     renderBackToStartButton: ReactNode;
 }
 
 interface IQuizState {
-    questions: IQuestion[];
+    answeredQuestions: IAnsweredQuestion[]
     currentQuestionID: number;
 }
 
@@ -45,63 +48,59 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
     constructor(props: IQuizProps) {
         super(props);
         const { data } = props;
-        const newQ = data.questions.map((q) => {
-            return {
-                ...q,
-                options: [...q.options]
-            }
-        });
-
         this.state = {
-            questions: newQ,
+            answeredQuestions: [],
             currentQuestionID: data.questions[0].id
         }
-
-        console.log("CONSTRUCTOR", data.questions);
     }
 
-    componentDidUpdate(prevProps: IQuizProps, prevState: IQuizState) {
-        console.log("TIME", new Date().getTime());
-        console.log(prevProps);
-        console.log(prevState);
-        console.log(this.props);
-        console.log(this.state);
-    }
-
-    updateQuestion(answers: IQuestionOption[]) {
+    updateQuestion(answers: IQuestionOption[], question: IQuestion) {
         this.setState((state) => {
-            const {questions, currentQuestionID} = state;
-            const newQuestions = questions.map((q) => {
-                if (q.id == currentQuestionID) {
-                    return {
-                        ...q,
-                        answers
-                    }
-                }
-                return q;
-            });
-
-            return {questions: newQuestions}
+            const {answeredQuestions} = state;
+            const exists = answeredQuestions.find(
+                aq => aq.id === question.id
+            );
+            if (exists) {
+                const newAQuestions = answeredQuestions.map((aq) => {
+                    return aq.id === question.id
+                        ? { ...question, answers }
+                        : aq;
+                });
+                return { answeredQuestions: newAQuestions }
+            }
+        
+            return {
+                answeredQuestions: [
+                    ...answeredQuestions,
+                    { ...question, answers }
+                ]
+            }
+        }, () => {
+            if (!this.getNextQuestion(this.state.currentQuestionID)) {
+                const {onComplete} = this.props;
+                const {answeredQuestions} = this.state;
+                onComplete(answeredQuestions);
+            }
         });
     }
 
     getScore(): number {
-        const { questions } = this.state;
-        return getScore(questions);
+        const { answeredQuestions } = this.state;
+        return getScore(answeredQuestions);
     }
 
     getQuestionPosititon(questionID: number): IQuizPosition {
-        const { questions } = this.state;
+        const { data } = this.props;
         const questionIndex = this.getQuestionIndexByID(questionID);
         return {
             current: questionIndex + 1,
-            total: questions.length
+            total: data.questions.length
         }
     }
 
     getQuestionIndexByID(questionID: number): number {
-        const { questions } = this.state;
-        return questions.reduce((previousValue, question, index) => {
+        const { data } = this.props;
+        return data.questions.reduce((previousValue, question, index) => {
             if (question.id == questionID) {
                 return previousValue + index;
             }
@@ -110,46 +109,35 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
     }
 
     getQuestionByID(questionID: number): IQuestion | undefined {
-        const { questions } = this.state;
-        return  questions.find((question) => question.id == questionID);
+        const { data } = this.props;
+        return  data.questions.find((question) => question.id == questionID);
     }
 
     getFirstQuestionID() {
-        const { questions } = this.state;
-        return questions[0].id;
+        const { data } = this.props;
+        return data.questions[0].id;
     }
 
     getNextQuestion(questionID: number): IQuestion | undefined {
-        const { questions } = this.state;
+        const { data } = this.props;
         const nextQuestionIndex = this.getQuestionIndexByID(questionID) + 1;
-        if (nextQuestionIndex in questions) {
-            return questions[nextQuestionIndex];
+        if (nextQuestionIndex in data.questions) {
+            return data.questions[nextQuestionIndex];
         }
         return undefined;
     }
 
     getPreviousQuestion(questionID: number): IQuestion | undefined {
-        const { questions } = this.state;
+        const { data } = this.props;
         const prevQuestionIndex = this.getQuestionIndexByID(questionID) - 1;
-        if (prevQuestionIndex in questions) {
-            return questions[prevQuestionIndex];
+        if (prevQuestionIndex in data.questions) {
+            return data.questions[prevQuestionIndex];
         }
         return undefined;
     }
 
-    getUnansweredQuestion() {
-        const { questions } = this.state;
-        return  questions.find((question) => !question.answers);
-    }
-
-    onQuestionComplete = (answers: IQuestionOption[]) => {
-        this.updateQuestion(answers);
-
-        if(!this.getNextQuestion(this.state.currentQuestionID)) {
-            const {onComplete} = this.props;
-            const {questions} = this.state;
-            onComplete(questions);
-        }
+    onQuestionComplete = (answers: IQuestionOption[], question: IQuestion) => {
+        this.updateQuestion(answers, question);
     }
 
     renderNotFound() {
@@ -193,7 +181,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
             previousQuestionButton
         } = language;
         return (
-            <BigButton onClick={() =>{
+            <BigButton onClick={() => {
                 this.setState((state) => {
                     const {
                         currentQuestionID

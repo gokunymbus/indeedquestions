@@ -2,26 +2,16 @@ import { IQuizData, IQuizResult, getScore, getCorrectQuestions } from "./QuizMod
 
 const storageKey = "quiz-storage";
 
-export function setQuizResults(quiz: IQuizData) {
-    const { questions } = quiz;
-    const quizResult: IQuizResult[] = [];
+export function setQuizResults(quizResult: IQuizResult) {
+    const allQuizResults: IQuizResult[] = [quizResult];
     const existingQuizResults: string | null = localStorage.getItem(storageKey);
-    const newQuiz = {
-        dateCompleted: new Date().toString(),
-        points: getScore(questions),
-        totalQuestions: questions.length,
-        correctQuestions: getCorrectQuestions(questions)
-    };
-
-    quizResult.push(newQuiz);
-
     if (!existingQuizResults) {
-        localStorage.setItem(storageKey, JSON.stringify(quizResult));
+        localStorage.setItem(storageKey, JSON.stringify(allQuizResults));
         return;
     }
 
     const formatedResults = JSON.parse(existingQuizResults!);
-    const finalQuizResult = quizResult.concat(formatedResults);
+    const finalQuizResult = allQuizResults.concat(formatedResults);
     localStorage.setItem(storageKey, JSON.stringify(finalQuizResult));
 }
 
@@ -36,6 +26,6 @@ export function getQuizResults(): IQuizResult[] | null {
 export function sortResultsByScore(results: IQuizResult[]): IQuizResult[] {
     const newResults = [...results];
     return newResults.sort((aResult, bResult) => {
-        return (aResult.correctQuestions > bResult.correctQuestions) ? 1 : -1;
+        return (aResult.correctQuestions > bResult.correctQuestions) ? -1 : 1;
     })
 }

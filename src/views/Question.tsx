@@ -1,11 +1,10 @@
 import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
-import IQuestion, { IQuestionOption, QuestionType } from '../library/IQuestion';
+import  { getCorrectOptions, IQuestion, IQuestionOption, QuestionType } from '../library/QuizModel';
 import styled from 'styled-components';
 import {RadioGroup, IRadioGroupItem} from '../components/RadioGroup';
 import Checkbox from '../components/Checkbox';
-import { getCorrectQuestions } from '../library/QuizModel';
 
 export enum QuestionStatus {
     NO_ANSWER,
@@ -18,7 +17,10 @@ interface IQuestionProps {
    question: IQuestion;
    languageCode: string;
    language: any;
-   onQuestionCompleted: (answers: IQuestionOption[]) => void;
+   onQuestionCompleted: (
+        answers: IQuestionOption[],
+        question: IQuestion
+   ) => void;
    renderNextButton: ReactNode;
    renderBackButton: ReactNode;
 }
@@ -32,7 +34,9 @@ const QuestionTitleStyled = styled.h3`
     font-size: 16px;
 `;
 
-export default class Question extends React.Component<IQuestionProps, IQuestionState> {
+export default class Question extends React.Component<
+    IQuestionProps, IQuestionState
+> {
     constructor(props: IQuestionProps) {
         super(props);
         this.state = this.defaultState();
@@ -58,35 +62,29 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
             const { onQuestionCompleted, question } = props;
             const { activeAnswers } = state;
 
-            if (!activeAnswers || activeAnswers.length === 0) {
+            if (activeAnswers.length === 0) {
                 return {
                     status: QuestionStatus.ERROR_NO_ANSWERS
                 }
             }
 
-            const allCorrectAnswers = question.options.filter(
-                (answer: IQuestionOption) => answer.isCorrect
-            );
-
+            const correctOptions = getCorrectOptions(question);
             const correctlySelectedAnswers = activeAnswers.reduce<number>((accumulator, current) => {
-                const matchingSelectedAnswer = allCorrectAnswers.find(
-                    (a: IQuestionOption) => a.id == current.id
+                const found = correctOptions.find(
+                    (a) => a.id == current.id
                 );
-    
-                if (matchingSelectedAnswer) {
-                    return accumulator + 1;
-                }
-                return accumulator - 1;
+                return found
+                    ? accumulator + 1
+                    : accumulator - 1
             }, 0);
-    
-    
+
+            // Send the data upwards to be commited
+            onQuestionCompleted([...activeAnswers], question);
+
             let newStatus = QuestionStatus.PASSED;
-            if (correctlySelectedAnswers !== allCorrectAnswers.length) {
+            if (correctlySelectedAnswers !== correctOptions.length) {
                newStatus = QuestionStatus.FAILED;
             }
-    
-            // Send the data upwards to be commited
-            onQuestionCompleted([...activeAnswers]);
     
             return {
                 status: newStatus
@@ -104,9 +102,8 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
         if (isChecked) {
             this.setState((state) => {
                 const { activeAnswers } = state;
-                const newAnswers = activeAnswers.concat(option);
                 return {
-                    activeAnswers: newAnswers
+                    activeAnswers: activeAnswers.concat(option)
                 }
             });
             return;
@@ -114,9 +111,11 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
 
         this.setState((state) => {
             const { activeAnswers }  = state;
-            const filteredAnswers = activeAnswers.filter((o) => o.id !== option.id);
+            const filtered = activeAnswers.filter(
+                (o) => o.id !== option.id
+            );
             return  {
-                activeAnswers: filteredAnswers
+                activeAnswers: filtered
             }
         });
     }
@@ -211,19 +210,19 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
             question,
             languageCode
         } = this.props;
+        const { options } = question;
 
-        const selectionItemMap = question.options.map((option) => {
-            const newMap: IRadioGroupItem = {
+        const items: IRadioGroupItem[] = options.map((option) => {
+            return {
                 label: option.description[languageCode],
                 id: option.id,
                 data: option
             };
-            return newMap
         });
 
         return(
             <RadioGroup
-                items={selectionItemMap}
+                items={items}
                 onChange={(index) => {
                     this.onRadioGroupChange(question.options[index])
                 }}

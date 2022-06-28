@@ -1,4 +1,3 @@
-import IQuestion from "./IQuestion";
 import jsondata from '../data/quizes.json';
 import { IQuizData } from "./QuizModel";
 
