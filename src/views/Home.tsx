@@ -4,7 +4,6 @@ import React from 'react';
 import { Link } from "react-router-dom";
 
 interface IHomeProps {
-    onStart: () => void;
     language: any;
     linkTo: string;
 }
@@ -15,12 +14,12 @@ export default class Home extends React.Component<IHomeProps, {}> {
     }
 
     render(): ReactNode {
-        const {onStart, language, linkTo} = this.props;
+        const {language, linkTo} = this.props;
 
         return  (
             <div>
                 <Link to={linkTo}>
-                    <BigButton onClick={onStart}>{language.startButton}</BigButton>
+                    <BigButton onClick={() => {}}>{language.startButton}</BigButton>
                 </Link>
             </div>
         )

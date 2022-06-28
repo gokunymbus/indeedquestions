@@ -4,7 +4,7 @@ import {getLanguageCode, getLanguageData} from './language/language';
 import Home from "./views/Home";
 import styled from 'styled-components';
 import { createGlobalStyle } from 'styled-components'
-import { HashRouter, Routes, Route, useNavigate } from "react-router-dom";
+import { HashRouter, Routes, Route, Link } from "react-router-dom";
 import { IQuizData } from './library/QuizModel';
 import IQuestion from "./library/IQuestion";
 import { fetchQuizes } from "./library/QuizData";
@@ -12,9 +12,12 @@ import Loading from "./views/Loading";
 import AppRoutes from './library/AppRoutes';
 import Quiz from './views/Quiz';
 import useWithNavigate from './library/useWithNavigate';
+import { BigButton } from './components/Buttons';
+import Completed from './views/Completed';
+import { setQuizResults } from './library/QuizStorage';
 
 // Data
-const languageData = getLanguageData();
+const languageData:any = getLanguageData();
 
 const GlobalStyle = createGlobalStyle`
   body, html, #root {
@@ -43,17 +46,12 @@ class App extends React.Component<any, AppState> {
     this.state = {}
   }
 
-  onNext = () => {
-
-  };
-
-  onStart = () => {
-    
-  };
-
-  renderHome() {
-
-  };
+  componentDidUpdate(prevProps:any, prevState: AppState) {
+    console.log(prevProps, "APP");
+    console.log(prevState, "APP");
+    console.log(this.props, "APP");
+    console.log(this.state, "APP");
+  }
 
   componentDidMount() {
     const responsePromise = fetchQuizes();
@@ -68,6 +66,32 @@ class App extends React.Component<any, AppState> {
     return(<Loading />)
   }
 
+  renderBackToStartButton() {
+    const {
+        backToStart
+    } = languageData;
+    return (
+        <Link to={AppRoutes.home}>
+          <BigButton onClick={() => {}}>
+              {backToStart}
+          </BigButton>
+        </Link>
+    )
+  }
+
+  renderCompleteQuizButton() {
+    const {
+        completeQuizButton
+    } = languageData;
+      return (
+        <Link to={AppRoutes.complete}>
+          <BigButton onClick={() => {}}>
+              {completeQuizButton}
+          </BigButton>
+        </Link>
+      )
+  }
+
   renderQuiz = () => {
     const languageCode = getLanguageCode();
     const {quiz} = this.state;
@@ -78,7 +102,6 @@ class App extends React.Component<any, AppState> {
             path={AppRoutes.home}
             element={
               <Home
-                onStart={this.onStart}
                 language={languageData}
                 linkTo={`${AppRoutes.question}`}
               />
@@ -92,21 +115,31 @@ class App extends React.Component<any, AppState> {
                 languageCode={languageCode}
                 data={quiz}
                 onComplete={(questions: IQuestion[]) => {
-                  const { navigate } = this.props;
-                  navigate('/complete');
+                  // Write completed questions to local storage.
+                  const newQuiz: IQuizData = {
+                    name: quiz?.name!,
+                    id: quiz?.id!,
+                    questions: [...questions]
+                  }
+                  setQuizResults(newQuiz);
                 }}
+                renderBackToStartButton={this.renderBackToStartButton()}
+                renderCompleteButton={this.renderCompleteQuizButton()}
               />
             }
           />
           <Route
             path={`${AppRoutes.complete}`}
             element={
-            <div>
-              Quiz Completed
-            </div>}
+              <Completed
+                language={languageData}
+                languageCode={languageCode}
+              />
+            }
           />
         </Routes>
       </HashRouter>
+      
     )
   }
 
@@ -126,4 +159,4 @@ class App extends React.Component<any, AppState> {
   }
 }
 
-export default useWithNavigate(App);
+export default App;

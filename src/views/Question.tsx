@@ -5,7 +5,7 @@ import IQuestion, { IQuestionOption, QuestionType } from '../library/IQuestion';
 import styled from 'styled-components';
 import {RadioGroup, IRadioGroupItem} from '../components/RadioGroup';
 import Checkbox from '../components/Checkbox';
-
+import { getCorrectQuestions } from '../library/QuizModel';
 
 export enum QuestionStatus {
     NO_ANSWER,
@@ -18,13 +18,12 @@ interface IQuestionProps {
    question: IQuestion;
    languageCode: string;
    language: any;
-   onQuestionCompleted: (question: IQuestion) => void;
+   onQuestionCompleted: (answers: IQuestionOption[]) => void;
    renderNextButton: ReactNode;
    renderBackButton: ReactNode;
 }
 
 interface IQuestionState {
-    question: IQuestion;
     status?: QuestionStatus;
     activeAnswers: IQuestionOption[]
 }
@@ -36,12 +35,11 @@ const QuestionTitleStyled = styled.h3`
 export default class Question extends React.Component<IQuestionProps, IQuestionState> {
     constructor(props: IQuestionProps) {
         super(props);
-        this.state = this.defaultState(props);
+        this.state = this.defaultState();
     }
 
-    defaultState(props: IQuestionProps) {
+    defaultState() {
         return {
-            question: props.question,
             activeAnswers: [],
             status: QuestionStatus.NO_ANSWER
         }
@@ -50,51 +48,50 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
     componentDidUpdate(prevProps: IQuestionProps, prevState: IQuestionState) {
         const {question} = this.props;
         if (prevProps.question.id !== question.id) {
-            this.setState(this.defaultState(this.props))
+            console.log(question);
+            this.setState(this.defaultState())
         }
     }
 
     onSubmitAnswer = () => {
-        const { onQuestionCompleted } = this.props;
-        const { question, activeAnswers } = this.state;
+        this.setState((state, props) => {
+            const { onQuestionCompleted, question } = props;
+            const { activeAnswers } = state;
 
-        if (!activeAnswers || activeAnswers.length === 0) {
-            this.setState({
-                status: QuestionStatus.ERROR_NO_ANSWERS
-            });
-            return;
-        }
-
-        const allCorrectAnswers = question.options.filter(
-            (answer: IQuestionOption) => answer.isCorrect
-        );
-
-        const correctlySelectedAnswers = allCorrectAnswers.reduce<number>((accumulator, current) => {
-            const matchingSelectedAnswer = activeAnswers.find(
-                (a: IQuestionOption) => a.id == current.id
-            );
-            if (matchingSelectedAnswer) {
-                return accumulator + 1;
+            if (!activeAnswers || activeAnswers.length === 0) {
+                return {
+                    status: QuestionStatus.ERROR_NO_ANSWERS
+                }
             }
-            return accumulator;
-        }, 0);
 
-        const newQuestion = {
-            ...question,
-            answers: [...activeAnswers]
-        };
+            const allCorrectAnswers = question.options.filter(
+                (answer: IQuestionOption) => answer.isCorrect
+            );
 
-        let newStatus = QuestionStatus.PASSED;
-        if (correctlySelectedAnswers !== allCorrectAnswers.length) {
-           newStatus = QuestionStatus.FAILED;
-        }
-
-        onQuestionCompleted(newQuestion);
-        this.setState({
-            status: newStatus,
-            question: newQuestion
-        });
-        return;
+            const correctlySelectedAnswers = activeAnswers.reduce<number>((accumulator, current) => {
+                const matchingSelectedAnswer = allCorrectAnswers.find(
+                    (a: IQuestionOption) => a.id == current.id
+                );
+    
+                if (matchingSelectedAnswer) {
+                    return accumulator + 1;
+                }
+                return accumulator - 1;
+            }, 0);
+    
+    
+            let newStatus = QuestionStatus.PASSED;
+            if (correctlySelectedAnswers !== allCorrectAnswers.length) {
+               newStatus = QuestionStatus.FAILED;
+            }
+    
+            // Send the data upwards to be commited
+            onQuestionCompleted([...activeAnswers]);
+    
+            return {
+                status: newStatus
+            };
+        });    
     }
 
     onRadioGroupChange(option: IQuestionOption) {
@@ -104,20 +101,23 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
     }
 
     onCheckboxChange(option: IQuestionOption, isChecked: boolean) {
-        const { activeAnswers } = this.state;
-
         if (isChecked) {
-            const newAnswers = activeAnswers.concat(option);
-            this.setState({
-                activeAnswers: newAnswers
+            this.setState((state) => {
+                const { activeAnswers } = state;
+                const newAnswers = activeAnswers.concat(option);
+                return {
+                    activeAnswers: newAnswers
+                }
             });
             return;
         }
 
-        // Remove option from state
-        const filteredAnswers = activeAnswers.filter((o) => o.id !== option.id);
-        this.setState({
-            activeAnswers: filteredAnswers
+        this.setState((state) => {
+            const { activeAnswers }  = state;
+            const filteredAnswers = activeAnswers.filter((o) => o.id !== option.id);
+            return  {
+                activeAnswers: filteredAnswers
+            }
         });
     }
 
@@ -161,7 +161,6 @@ export default class Question extends React.Component<IQuestionProps, IQuestionS
                     description
                 } = option;
                 const uniqueName = `${question.id}-${id}`
-                console.log
                 return(
                     <Checkbox
                         id={id}

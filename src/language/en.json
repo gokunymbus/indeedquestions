@@ -9,5 +9,16 @@
     "errorWrongAnswers": "Oh no, wrong answer(s)!",
     "answerCorrect": "Yay, you got it right!",
     "questionPosition": "Question {0} of {1}",
-    "currentScore": "Score"
+    "currentScore": "Score",
+    "noQuizCompleted": "Sorry, you haven't completed a quiz!",
+    "questionsRight": "You got {0} out of {1} questions right!",
+    "bestScore": "Your best score so far was {0} out of {1} questions which you got on {2}",
+    "playAgainButton": "Play again!",
+    "didntGetAny": "Oof, didnt get any :(",
+    "gotatleastOne": "Well, you got atleast one!",
+    "someIsbetterThanNone": "Some is better than none lol",
+    "someAnswers": "Even some random answers are correct sometimes",
+    "gotSomeRight": "Hey you got some right, great job!",
+    "youKnowSomeStuff": "Wow, you know some stuff",
+    "youAreAnExpert": "You are an expert, congrats!"
 }

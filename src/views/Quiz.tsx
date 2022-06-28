@@ -2,9 +2,9 @@ import { ReactNode } from 'react';
 import { BigButton } from '../components/Buttons';
 import React from 'react';
 import styled from 'styled-components';
-import IQuestion from '../library/IQuestion';
+import IQuestion, { IQuestionOption } from '../library/IQuestion';
 import useWithParams from '../library/useWithParams';
-import { IQuizPosition, IQuizData, getScore } from '../library/QuizModel';
+import { IQuizPosition, IQuizData, getScore, getCorrectQuestions } from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
 import { Link } from 'react-router-dom';
 import AppRoutes from '../library/AppRoutes';
@@ -16,6 +16,8 @@ interface IQuizProps {
     questionID: number;
     languageCode: string;
     onComplete: (questions: IQuestion[]) => void
+    renderCompleteButton: ReactNode;
+    renderBackToStartButton: ReactNode;
 }
 
 interface IQuizState {
@@ -43,22 +45,44 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
     constructor(props: IQuizProps) {
         super(props);
         const { data } = props;
-        this.state = {
-            questions: data.questions,
-            currentQuestionID: data.questions[0].id
-        }
-    }
-
-    updateQuestion(question: IQuestion) {
-        const {questions} = this.state;
-        const newQuestions = questions.map((q) => {
-            if (q.id == question.id) {
-                return {...question }
+        const newQ = data.questions.map((q) => {
+            return {
+                ...q,
+                options: [...q.options]
             }
-            return q;
         });
 
-        this.setState({questions: newQuestions});
+        this.state = {
+            questions: newQ,
+            currentQuestionID: data.questions[0].id
+        }
+
+        console.log("CONSTRUCTOR", data.questions);
+    }
+
+    componentDidUpdate(prevProps: IQuizProps, prevState: IQuizState) {
+        console.log("TIME", new Date().getTime());
+        console.log(prevProps);
+        console.log(prevState);
+        console.log(this.props);
+        console.log(this.state);
+    }
+
+    updateQuestion(answers: IQuestionOption[]) {
+        this.setState((state) => {
+            const {questions, currentQuestionID} = state;
+            const newQuestions = questions.map((q) => {
+                if (q.id == currentQuestionID) {
+                    return {
+                        ...q,
+                        answers
+                    }
+                }
+                return q;
+            });
+
+            return {questions: newQuestions}
+        });
     }
 
     getScore(): number {
@@ -118,35 +142,14 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
         return  questions.find((question) => !question.answers);
     }
 
-    onQuestionComplete = (question: IQuestion) => {
-        this.updateQuestion(question);
-    }
+    onQuestionComplete = (answers: IQuestionOption[]) => {
+        this.updateQuestion(answers);
 
-    renderBackToStartButton() {
-        const {
-            backToStart
-        } = this.props.language;
-        return (
-            <Link to={AppRoutes.home}>
-                <BigButton onClick={() => {}}>
-                    {backToStart}
-                </BigButton>
-            </Link>
-        )
-    }
-
-    renderCompleteQuizButton() {
-        const {
-            completeQuizButton
-        } = this.props.language;
-        return (
-            <BigButton onClick={() => {
-                const { onComplete } = this.props;
-                onComplete(this.state.questions);
-            }}>
-                {completeQuizButton}
-            </BigButton>
-        )
+        if(!this.getNextQuestion(this.state.currentQuestionID)) {
+            const {onComplete} = this.props;
+            const {questions} = this.state;
+            onComplete(questions);
+        }
     }
 
     renderNotFound() {
@@ -162,16 +165,19 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
             language,
         } = this.props;
         const {
-            currentQuestionID
-        } = this.state;
-        const {
             nextQuestionButton
         } = language;
-        const nextQuestion = this.getNextQuestion(currentQuestionID)!;
+       
         return (
             <BigButton onClick={() =>{
-                this.setState({
-                    currentQuestionID: nextQuestion.id
+                this.setState((state) => {
+                    const {
+                        currentQuestionID
+                    } = state;
+                    const nextQuestion = this.getNextQuestion(currentQuestionID)!;
+                    return {
+                        currentQuestionID: nextQuestion.id
+                    }
                 })
             }}>
                 {nextQuestionButton}
@@ -184,16 +190,18 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
             language
         } = this.props;
         const {
-            currentQuestionID
-        } = this.state;
-        const {
             previousQuestionButton
         } = language;
-        const previousQuestion = this.getPreviousQuestion(currentQuestionID)!;
         return (
             <BigButton onClick={() =>{
-                this.setState({
-                    currentQuestionID: previousQuestion.id
+                this.setState((state) => {
+                    const {
+                        currentQuestionID
+                    } = state;
+                    const previousQuestion = this.getPreviousQuestion(currentQuestionID)!;
+                    return {
+                        currentQuestionID: previousQuestion.id
+                    }
                 })
             }}>
                 {previousQuestionButton}
@@ -204,7 +212,9 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
     renderQuestion() {
         const {
             language,
-            languageCode
+            languageCode,
+            renderBackToStartButton,
+            renderCompleteButton
         } = this.props;
 
         const {
@@ -240,12 +250,12 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
                     renderNextButton={
                         (nextQuestion)
                             ? this.renderNextButton()
-                            : this.renderCompleteQuizButton()
+                            : renderCompleteButton
                     }
                     renderBackButton={
                         (previousQuestion)
                             ? this.renderBackButton()
-                            : this.renderBackToStartButton()
+                            : renderBackToStartButton
                     }
                     onQuestionCompleted={this.onQuestionComplete}
                 />

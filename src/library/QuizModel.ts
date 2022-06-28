@@ -29,26 +29,23 @@ export function getCorrectQuestions(questions: IQuestion[]): number {
         if (!question.answers) {
             return accumulator;
         }
+
         const correctOptions = question.options.filter((option) => {
             return option.isCorrect;
-        }); 
+        });
 
-        if (question.answers.length === question.options.length) {
+        const correctAnswers = question.answers.reduce<number>((aa, answer) => {
+            const foundOption = correctOptions.find((qo) => qo.id = answer.id);
+            if (foundOption) {
+                return aa + 1;
+            }
+            return aa;
+        }, 0);
 
+        if (correctAnswers == correctOptions.length) {
+            return accumulator + 1;
         }
-        // const correctlySelectedAnswers = correctOptions.reduce<number>((accumulator, current) => {
-        //     const matchingSelectedAnswer = question.answers?.find(
-        //         (a: IQuestionOption) => a.id == current.id
-        //     );
-
-        //     if (matchingSelectedAnswer) {
-        //         return accumulator + 1;
-        //     }
-
-        //     return accumulator;
-        // }, 0);
-
-        return accumulator + correctlySelectedAnswers;
+        return accumulator
     }, 0);
 }
 
