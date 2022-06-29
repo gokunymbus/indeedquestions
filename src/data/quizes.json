@@ -8,54 +8,40 @@
             "type": "single",
             "description": {
                 "en": "Which brand of hot sauce is the oldest?",
-                "es": "Which brand of hot sauce is the oldest?",
-                "ja": "Which brand of hot sauce is the oldest?",
-                "uk": "Which brand of hot sauce is the oldest?"
+                "ja": "どのブランドのホットソースが最も古いですか？"
             },
             "options": [
                 {
                     "id": 1,
                     "description": {
                         "en": "El Yucateco",
-                        "es": "El Yucateco",
-                        "ja": "El Yucateco",
-                        "uk": "El Yucateco"
+                        "ja": "ユカテカン"
                     },
-                    "isCorrect": false,
-                    "points": 0
+                    "isCorrect": false
                 },
                 {
                     "id": 2,
                     "description": {
                         "en": "Secret Aardvark",
-                        "es": "Secret Aardvark",
-                        "ja": "Secret Aardvark",
-                        "uk": "Secret Aardvark"
+                        "ja": "シークレットアードバーク"
                     },
-                    "isCorrect": false,
-                    "points": -1
+                    "isCorrect": false
                 },
                 {
                     "id": 3,
                     "description": {
                         "en": "Tapatio",
-                        "es": "Tapatio",
-                        "ja": "Tapatio",
-                        "uk": "Tapatio"
+                        "ja": "タパティオ"
                     },
-                    "isCorrect": false,
-                    "points": 0
+                    "isCorrect": false
                 },
                 {
                     "id": 4,
                     "description": {
                         "en": "Tabasco",
-                        "es": "Tabasco",
-                        "ja": "Tabasco",
-                        "uk": "Tabasco"
+                        "ja": "タバスコ"
                     },
-                    "isCorrect": true,
-                    "points": 1
+                    "isCorrect": true
                 }
             ]
         },
@@ -65,65 +51,48 @@
             "type": "multi",
             "description": {
                 "en": "What ingredients are commonly found in hotsauces?",
-                "es": "What ingredients are commonly found in hotsauces?",
-                "ja": "What ingredients are commonly found in hotsauces?",
-                "uk": "What ingredients are commonly found in hotsauces?"
+                "ja": "ホットソースによく見られる成分は何ですか？"
             },
             "options": [
                 {
                     "id": 1,
                     "description": {
                         "en": "Peppers",
-                        "es": "Peppers",
-                        "ja": "Peppers",
-                        "uk": "Peppers"
+                        "ja": "コショウ"
                     },
-                    "isCorrect": true,
-                    "points": 2
+                    "isCorrect": true
                 },
                 {
                     "id": 2,
                     "description": {
                         "en": "Vinegar",
-                        "es": "Vinegar",
-                        "ja": "Vinegar",
-                        "uk": "Vinegar"
+                        "ja": "お酢"
                     },
-                    "isCorrect": true,
-                    "points": 1
+                    "isCorrect": true
                 },
                 {
                     "id": 3,
                     "description": {
                         "en": "Salt",
-                        "es": "Salt",
-                        "ja": "Salt",
-                        "uk": "Salt"
+                        "ja": "塩"
                     },
-                    "isCorrect": true,
-                    "points": 1
+                    "isCorrect": true
                 },
                 {
                     "id": 4,
                     "description": {
                         "en": "Glue",
-                        "es": "Glue",
-                        "ja": "Glue",
-                        "uk": "Glue"
+                        "ja": "のり"
                     },
-                    "isCorrect": false,
-                    "points": -2
+                    "isCorrect": false
                 },
                 {
                     "id": 5,
                     "description": {
                         "en": "Apples",
-                        "es": "Apples",
-                        "ja": "Apples",
-                        "uk": "Apples"
+                        "ja": "りんご"
                     },
-                    "isCorrect": true,
-                    "points": 1
+                    "isCorrect": true
                 }
             ]
         },
@@ -132,77 +101,57 @@
             "name": "Carribean ingredients",
             "type": "multi",
             "description": {
-                "en": "What two ingredients are most commonly used in Carribean hot sauces?",
-                "es": "What two ingredients are most commonly used in Carribean hot sauces?",
-                "ja": "What two ingredients are most commonly used in Carribean hot sauces?",
-                "uk": "What two ingredients are most commonly used in Carribean hot sauces?"
+                "en": "What two ingredients are most commonly used in Caribbean hot sauces?",
+                "ja": "カリブ海のホットソースで最も一般的に使用されている2つの材料は何ですか？"
             },
             "options": [
                 {
                     "id": 1,
                     "description": {
                         "en": "Habanero",
-                        "es": "Habanero",
-                        "ja": "Habanero",
-                        "uk": "Habanero"
+                        "ja": "ハバネロ"
                     },
-                    "isCorrect": true,
-                    "points": 1
+                    "isCorrect": true
                 },
                 {
                     "id": 2,
                     "description": {
                         "en": "Thai chilli",
-                        "es": "Thai chilli",
-                        "ja": "Thai chilli",
-                        "uk": "Thai chilli"
+                        "ja": "タイの唐辛子"
                     },
-                    "isCorrect": false,
-                    "points": -3
+                    "isCorrect": false
                 },
                 {
                     "id": 3,
                     "description": {
                         "en": "Jalepeno",
-                        "es": "Jalepeno",
-                        "ja": "Jalepeno",
-                        "uk": "Jalepeno"
+                        "ja": "ハラペニョ"
                     },
-                    "isCorrect": false,
-                    "points": -1
+                    "isCorrect": false
                 },
                 {
                     "id": 4,
                     "description": {
                         "en": "Bell Pepper",
-                        "es": "Bell Pepper",
-                        "ja": "Bell Pepper",
-                        "uk": "Bell Pepper"
+                        "ja": "ピーマン"
                     },
-                    "isCorrect": false,
-                    "points": 0
+                    "isCorrect": false
                 },
                 {
                     "id": 5,
                     "description": {
                         "en": "Scotch Bonnet",
-                        "es": "Scotch Bonnet",
-                        "ja": "Scotch Bonnet",
-                        "uk": "Scotch Bonnet"
+                        "ja": "スコッチボンネット"
                     },
-                    "isCorrect": true,
-                    "points": 3
+                    "isCorrect": true
                 },
                 {
                     "id": 6,
                     "description": {
-                        "en": "Carribean Fresno",
-                        "es": "Carribean Fresno",
-                        "ja": "Carribean Fresno",
-                        "uk": "Carribean Fresno"
+                        "en": "Carribbean Fresno",
+                        "ja": "カリブ海のフレズノ"
                     },
-                    "isCorrect": false,
-                    "points": -3
+                    "isCorrect": false
                 }
             ]
         },
@@ -212,65 +161,48 @@
             "type": "multi",
             "description": {
                 "en": "The United Kingdom is home to which of the two hotest peppers in the world?",
-                "es": "The United Kingdom is home to which of the two hotest peppers in the world?",
-                "ja": "The United Kingdom is home to which of the two hotest peppers in the world?",
-                "uk": "The United Kingdom is home to which of the two hotest peppers in the world?"
+                "ja": "イギリスには、世界で最も辛い2つの唐辛子のうちどちらがありますか？"
             },
             "options": [
                 {
                     "id": 1,
                     "description": {
                         "en": "Naga Viper",
-                        "es": "Naga Viper",
-                        "ja": "Naga Viper",
-                        "uk": "Naga Viper"
+                        "ja": "ナーガヴァイパー"
                     },
-                    "isCorrect": true,
-                    "points": 2
+                    "isCorrect": true
                 },
                 {
                     "id": 2,
                     "description": {
                         "en": "Infinity Chilli",
-                        "es": "Infinity Chilli",
-                        "ja": "Infinity Chilli",
-                        "uk": "Infinity Chilli"
+                        "ja": "インフィニティチリ"
                     },
-                    "isCorrect": true,
-                    "points": 2
+                    "isCorrect": true
                 },
                 {
                     "id": 3,
                     "description": {
                         "en": "Ghost Chilli",
-                        "es": "Ghost Chilli",
-                        "ja": "Ghost Chilli",
-                        "uk": "Ghost Chilli"
+                        "ja": "ゴーストチリ"
                     },
-                    "isCorrect": false,
-                    "points": 0
+                    "isCorrect": false
                 },
                 {
                     "id": 4,
                     "description": {
                         "en": "Carolina Reaper",
-                        "es": "Carolina Reaper",
-                        "ja": "Carolina Reaper",
-                        "uk": "Carolina Reaper"
+                        "ja": "キャロライナリーパー"
                     },
-                    "isCorrect": false,
-                    "points": -3
+                    "isCorrect": false
                 },
                 {
                     "id": 5,
                     "description": {
                         "en": "7 Pot Douglah",
-                        "es": "7 Pot Douglah",
-                        "ja": "7 Pot Douglah",
-                        "uk": "7 Pot Douglah"
+                        "ja": "7ポットダグラ"
                     },
-                    "isCorrect": false,
-                    "points": -3
+                    "isCorrect": false
                 }
             ]
         },
@@ -280,65 +212,48 @@
             "type": "single",
             "description": {
                 "en": "About how many years back have humans found evidence of hot sauce?",
-                "es": "About how many years back have humans found evidence of hot sauce?",
-                "ja": "About how many years back have humans found evidence of hot sauce?",
-                "uk": "About how many years back have humans found evidence of hot sauce?"
+                "ja": "A人間は何年前にホットソースの証拠を見つけましたか？"
             },
             "options": [
                 {
                     "id": 1,
                     "description": {
                         "en": "200 years",
-                        "es": "200 years",
-                        "ja": "200 years",
-                        "uk": "200 years"
+                        "ja": "200年"
                     },
-                    "isCorrect": false,
-                    "points": -1
+                    "isCorrect": false
                 },
                 {
                     "id": 2,
                     "description": {
                         "en": "1200 Years",
-                        "es": "1200 Years",
-                        "ja": "1200 Years",
-                        "uk": "1200 Years"
+                        "ja": "1200年"
                     },
-                    "isCorrect": false,
-                    "points": 0
+                    "isCorrect": false
                 },
                 {
                     "id": 3,
                     "description": {
                         "en": "2400 Years",
-                        "es": "2400 Years",
-                        "ja": "2400 Years",
-                        "uk": "2400 Years"
+                        "ja": "2400年"
                     },
-                    "isCorrect": true,
-                    "points": 2
+                    "isCorrect": true
                 },
                 {
                     "id": 4,
                     "description": {
                         "en": "5020 Years",
-                        "es": "5020 Years",
-                        "ja": "5020 Years",
-                        "uk": "5020 Years"
+                        "ja": "5020年"
                     },
-                    "isCorrect": false,
-                    "points": -1
+                    "isCorrect": false
                 },
                 {
                     "id": 5,
                     "description": {
                         "en": "12420 Years",
-                        "es": "12420 Years",
-                        "ja": "12420 Years",
-                        "uk": "12420 Years"
+                        "ja": "12420年"
                     },
-                    "isCorrect": false,
-                    "points": -2
+                    "isCorrect": false
                 }
             ]
         }

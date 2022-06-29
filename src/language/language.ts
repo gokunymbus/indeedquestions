@@ -1,12 +1,8 @@
 import en from './en.json';
-import es from './es.json';
-import uk from './uk.json';
 import ja from './ja.json';
 
 const languageData: any = {
     en,
-    es,
-    uk,
     ja
 }
 
@@ -24,16 +20,8 @@ export function getLanguageCode(): string {
             foundCode = 'en';
             break;
 
-        case /^es\b/.test(lang):
-            foundCode = 'es';
-            break;
-
         case /^ja\b/.test(lang):
             foundCode = 'ja';
-            break;
-
-        case /^uk\b/.test(lang):
-            foundCode = 'uk';
             break;
 
         default:

@@ -15,7 +15,6 @@ export interface IQuestionOption {
     id: number;
     description: languageObject;
     isCorrect: boolean;
-    points: number;
 }
 
 export interface IQuestion {
