@@ -3,12 +3,67 @@ import React from 'react';
 import {getQuizResults, sortResultsByScore} from '../library/QuizStorage';
 import { IQuizResult } from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
+import styled from 'styled-components';
+import ZIndexLayers from './ZIndexLayers';
+import PepperRain from './PepperRain';
+import  { fadeAndSlideDown } from './Animations';
 
 interface ICompletedProps {
     language: any;
     languageCode: string;
     renderPlayAgain: ReactNode;
 }
+
+const CompletedTitleStyled = styled.h1`
+    font-family: ${props => props.theme.titleFont };
+    font-size: 60px;
+    line-height: 60px;
+    color: ${props => props.theme.tertiaryColor };
+    margin-bottom: 12px;
+    text-align: center;
+`;
+
+const CompletedContainerStyled = styled.div`
+    width: 100vw;
+    min-height: 100vh;
+    background-color: ${props => props.theme.secondaryColor};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const CompletedInnerContainerStyled = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 18px;
+    width: 100%;
+    height: 100%;
+    z-index: ${ZIndexLayers.middle};
+    position: relative;
+    box-sizing: border-box;
+    animation: ${fadeAndSlideDown} .8s ease-out;
+    max-width: 1000px;
+`;
+
+const CompletedFinalScoreStyled = styled.h2`
+    font-size: 22px;
+    font-family: ${props => props.theme.mainFont};
+    margin-bottom: 10px;
+    color: ${props => props.theme.quaternaryColor };
+    text-align: center;
+`;
+
+const CompletedPreviousScoreStyled = styled.p`
+    font-size: 18px;
+    font-family: ${props => props.theme.mainFont};
+    margin-bottom: 20px;
+    margin-top: 0;
+    color: ${props => props.theme.quinaryColor };
+    text-align: center;
+`;
+
 
 export default class Completed extends React.Component<ICompletedProps, {}> {
     private quizResults: IQuizResult[] | null;
@@ -61,9 +116,9 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
         }
 
         return (
-            <div>
+            <CompletedTitleStyled>
                 {title}
-            </div>
+            </CompletedTitleStyled>
         )
     }
 
@@ -71,7 +126,7 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
         const { language } = this.props;
         const { noQuizCompleted } = language;
         return (
-            <div>{noQuizCompleted}</div>
+            <CompletedTitleStyled>{noQuizCompleted}</CompletedTitleStyled>
         )
     }
 
@@ -96,19 +151,8 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
         const sortedResults = sortResultsByScore(this.quizResults!);
         const bestPreviousScore = sortedResults[0];
         const bestScoreDate = new Date(bestPreviousScore.dateCompleted);
-        const bestScoreDateFormatted = `${
-            bestScoreDate.getMonth()
-        }/${
-            bestScoreDate.getDate()
-        }/${
-            bestScoreDate.getFullYear()
-        }`;
-
-        const bestScoreTime = `${
-            bestScoreDate.getHours()
-        }:${
-            bestScoreDate.getMinutes()
-        }`
+        const bestScoreDateFormatted = bestScoreDate.toLocaleDateString();
+        const bestScoreTime = bestScoreDate.toLocaleTimeString()
 
         const highestResult = replaceStringTokens(
             bestScore,
@@ -119,19 +163,23 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
                 bestScoreTime
             ]
         );
+
         return(
-            <div>
-                {this.getQuizTitle(latestQuiz)}
-                <div>
-                    {questionsRightText}
-                </div>
-                <div>
-                    {highestResult}
-                </div>
-                <div>
-                    {renderPlayAgain}
-                </div>
-            </div>
+            <CompletedContainerStyled>
+                <CompletedInnerContainerStyled>
+                    {this.getQuizTitle(latestQuiz)}
+                    <CompletedFinalScoreStyled>
+                        {questionsRightText}
+                    </CompletedFinalScoreStyled>
+                    <CompletedPreviousScoreStyled>
+                        {highestResult}
+                    </CompletedPreviousScoreStyled>
+                    <div>
+                        {renderPlayAgain}
+                    </div>
+                </CompletedInnerContainerStyled>
+                <PepperRain peppers={20} />
+            </CompletedContainerStyled>
         )
     }
 

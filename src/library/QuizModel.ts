@@ -7,8 +7,8 @@ export enum GradeResponses {
 }
 
 export enum QuestionType {
-    MULTI = <any>"multi",
-    SINGLE = <any>"single"
+    MULTI = <any>'multi',
+    SINGLE = <any>'single'
 }
 
 export interface IQuestionOption {
@@ -56,7 +56,7 @@ export function getQuizResult(quiz: IQuizComplete): IQuizResult {
     const { answeredQuestions, questions } = quiz;
     return {
         dateCompleted: new Date().toString(),
-        points: 0 ,// getScore(questions),
+        points:  getCorrectQuestions(answeredQuestions),
         totalQuestions: questions.length,
         correctQuestions: getCorrectQuestions(answeredQuestions)
     }
@@ -87,17 +87,5 @@ export function getCorrectQuestions(answeredQuestions: IAnsweredQuestion[]): num
             return accumulator + 1;
         }
         return accumulator
-    }, 0);
-}
-
-export function getScore(answeredQuestions: IAnsweredQuestion[]): number {
-    if (answeredQuestions.length == 0) {
-        return 0;
-    }
-    return answeredQuestions.reduce<number>((accumulator, question) => {
-        const questionPoints = question.answers!.reduce<number>((aa, answer) => {
-            return aa + answer.points;
-        }, 0);
-        return accumulator + questionPoints;
     }, 0);
 }

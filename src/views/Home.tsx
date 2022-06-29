@@ -1,13 +1,12 @@
 import { ReactNode } from 'react';
-import { BigButton } from '../components/Buttons';
+import { SecondaryLink } from '../components/Buttons';
 import React from 'react';
-import { Link } from "react-router-dom";
 import styled from 'styled-components';
 import { Pepper } from './Pepper';
 import { devices } from './Breakpoints';
-import  {fadeInLong, lightFalling, fallIn} from './Animations';
-import randomMinMax, {randomMinMaxFloat} from '../library/randomMinMax';
+import  {fadeAndSlideDown,  fallIn} from './Animations';
 import ZIndexLayers from './ZIndexLayers';
+import PepperRain from './PepperRain';
 
 interface IHomeProps {
     language: any;
@@ -15,9 +14,9 @@ interface IHomeProps {
     peppers: number;
 }
 
-const HomeStyled = styled.div`
-    width: 100%;
-    height: 100%;
+const HomeContainerStyled = styled.div`
+    width: 100vw;
+    height: 100vh;
     background-color: ${props => props.theme.quinaryColor};
 `;
 
@@ -31,6 +30,7 @@ const HomeInnerContainerStyled = styled.div`
     height: 100%;
     z-index: ${ZIndexLayers.middle};
     position: relative;
+    box-sizing: border-box;
 `;
 
 const HomeMainTitleStyled = styled.h1`
@@ -38,7 +38,8 @@ const HomeMainTitleStyled = styled.h1`
     line-height: 34px;
     font-family: ${props => props.theme.titleFont };
     color: ${props => props.theme.secondaryColor };
-    animation: ${fadeInLong} 0.4s ease-out;
+    animation: ${fadeAndSlideDown} 0.4s ease-out;
+    text-align: center;
 
     @media ${devices.tablet} {
         font-size: 60px;
@@ -56,75 +57,39 @@ const HomeMainTitleStyled = styled.h1`
     }
 `;
 
-const HomeButtonStyled = styled(BigButton)`
-    color: ${props => props.theme.whiteColor };
-    padding: 10px 40px;
-    background: linear-gradient(-45deg, ${
-        p => p.theme.quaternaryColor 
-    }, ${
-        p => p.theme.tertiaryColor
-    });
-`;
-
 const BigPepperContainer = styled.div`
     animation: ${fallIn} 4s ease-in-out;
 `;
 
-const PeppersRainContainer = styled.div`
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    left: 0;
-    top: 0;
-    z-index: ${ZIndexLayers.bottom};
-    pointer-events: none;
+const HomeLinkStyled = styled(SecondaryLink)`
+    font-size: 18px;
+    width: auto;
+    padding: 16px 30px;
 `;
 
-const PepperRainContainer = styled.div<{
-    left: number;
-    delay: string;
-}>`
-    left: ${props => props.left}%;
-    transform: translateY(-100%);
-    position: absolute;
-    animation: ${lightFalling} 6s ease-in-out -2s infinite;
-    animation-delay: ${props => props.delay}
-`;
+const numberOFPeppers = 50;
 
 export default class Home extends React.Component<IHomeProps, {}> {
-    private peppers: Array<any>;
     constructor(props: IHomeProps) {
         super(props);
-        this.peppers = Array.from(Array(props.peppers).keys());
     }
 
     render(): ReactNode {
         const { language, linkTo } = this.props;
         const { startButton, welcome } = language;
         return  (
-            <HomeStyled>
+            <HomeContainerStyled>
                 <HomeInnerContainerStyled>
                     <BigPepperContainer>
                         <Pepper pixelWidth={200} />
                     </BigPepperContainer>
                     <HomeMainTitleStyled>{welcome}</HomeMainTitleStyled>
-                    <Link to={linkTo}>
-                        <HomeButtonStyled onClick={() => {}} tabIndex={-1}>{startButton}</HomeButtonStyled>
-                    </Link>
+                    <HomeLinkStyled to={linkTo}>
+                        {startButton}
+                    </HomeLinkStyled>
                 </HomeInnerContainerStyled>
-                <PeppersRainContainer>
-                    {this.peppers.map(() => {
-                        return (
-                            <PepperRainContainer
-                                left={randomMinMax(1, 100)}
-                                delay={`${randomMinMaxFloat(1, 10)}s`}
-                            >
-                                <Pepper pixelWidth={40} />
-                            </PepperRainContainer>
-                        )
-                    })} 
-                </PeppersRainContainer>
-            </HomeStyled>
+               <PepperRain peppers={numberOFPeppers} />
+            </HomeContainerStyled>
         )
     }
 }

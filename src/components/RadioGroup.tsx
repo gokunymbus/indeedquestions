@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 import React from 'react';
 
 interface RadioButtonProps {
@@ -11,15 +11,56 @@ interface RadioButtonProps {
 }
 
 export const RadioButtonStyled = styled.input.attrs({
-    type: "radio",
-})``;
+    type: 'radio',
+})`
+    appearance: none;
+    min-width: 30px;
+    min-height: 30px;
+    background-color: ${props => props.theme.primaryColor};
+    border-radius: 50%;
+    position: relative;
+
+    &:checked {
+        &::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: ${props => props.theme.quinaryColor};
+            z-index: 20;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+    }
+
+    &:hover {
+        cursor: pointer;
+    }
+`;
 
 export const RadioContainerStyled = styled.div`
     padding: 8px;
+    box-sizing: border-box;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 export const RadioLabelStyled = styled.label`
     padding: 8px;
+    font-family: ${props => props.theme.mainFont};
+    font-size: 20px;
+    color: ${props => props.theme.secondaryColor};
+
+    &:hover {
+        cursor: pointer;
+    }
 `;
 
 class RadioButton extends React.Component<RadioButtonProps, {}> {
@@ -44,8 +85,7 @@ class RadioButton extends React.Component<RadioButtonProps, {}> {
             id,
             label,
             groupName,
-            checked,
-            index
+            checked
         } = this.props;
         return (
             <RadioContainerStyled
@@ -54,7 +94,7 @@ class RadioButton extends React.Component<RadioButtonProps, {}> {
                     this.onChangeHandler();
                 }}  
                 onKeyUp={(e) => {
-                    if (e.key !== "Enter" && e.key !== " ") {
+                    if (e.key !== 'Enter' && e.key !== ' ') {
                         return;
                     }
                     this.onChangeHandler();

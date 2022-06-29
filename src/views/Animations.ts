@@ -1,11 +1,11 @@
 import {keyframes} from 'styled-components';
-export const fadeInLong = keyframes`
+export const fadeAndSlideDown = keyframes`
     0% {
-        opacity: 0.1;
+        opacity: 0;
         transform: translateY(-200%);
     },
     80% {
-        opacity: 0.1;
+        opacity: 0.2;
     },
     100% {
         opacity: 1;
@@ -13,18 +13,37 @@ export const fadeInLong = keyframes`
     }
 `;
 
+export const slideUp = keyframes`
+    0% {
+        transform: translateY(100%);
+    },
+    100% {
+        transform: translateY(0);
+    }
+`;
+
+
+export const fadeIn = keyframes`
+    0% {
+        transform: opacity(0);
+    },
+    100% {
+        transform: translateY(1);
+    }
+`;
+
 export const fallIn = keyframes`
     0% {
-        transform: rotateZ(-15deg) rotateY(-12deg) translate(0, -70vh);
+        transform: rotateZ(-15deg) rotateY(-12deg) translate(0, -50vh);
     }
     10% {
-        transform: rotateZ(10deg) rotateY(20deg) translate(-40vw, -60vh);
+        transform: rotateZ(10deg) rotateY(20deg) translate(-10vw, -40vh);
     }
     50% {
-        transform: rotateZ(-15deg) rotateY(-20deg) translate(50vw, -35vh);
+        transform: rotateZ(-15deg) rotateY(-20deg) translate(18vw, -25vh);
     }
     75% {
-        transform: rotateZ(10deg) rotateY(10deg) translate(-20vw, -25vh);
+        transform: rotateZ(10deg) rotateY(10deg) translate(-18vw, -15vh);
     }
     100% {
         transform: rotateZ(0) rotateY(0) translate(0, 0);
@@ -46,5 +65,14 @@ export const lightFalling = keyframes`
     }
     100% {
         transform: rotateZ(-15deg) rotateY(-12deg) translate(10vw, 110vh);
+    }
+`;
+
+export const expandIn = keyframes`
+    0% {
+       transform: scale(0.1);
+    },
+    100% {
+        transform: scale(1);
     }
 `;

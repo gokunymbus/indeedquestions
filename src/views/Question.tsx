@@ -1,16 +1,23 @@
 import { ReactNode } from 'react';
-import { BigButton } from '../components/Buttons';
+import { PrimaryButton } from '../components/Buttons';
 import React from 'react';
-import  { getCorrectOptions, IQuestion, IQuestionOption, QuestionType } from '../library/QuizModel';
+import  {
+    getCorrectOptions,
+    IQuestion,
+    IQuestionOption,
+    QuestionType
+} from '../library/QuizModel';
 import styled from 'styled-components';
 import {
     RadioGroup,
     IRadioGroupItem,
-    RadioLabelStyled,
     RadioContainerStyled,
-    RadioButtonStyled
 } from '../components/RadioGroup';
-import Checkbox from '../components/Checkbox';
+import Checkbox, {
+    CheckboxContainerStyled
+} from '../components/Checkbox';
+import { devices } from './Breakpoints';
+import { fadeIn } from './Animations';
 
 export enum QuestionStatus {
     NO_ANSWER,
@@ -36,8 +43,14 @@ interface IQuestionState {
     activeAnswers: IQuestionOption[]
 }
 
+const messageMinHeight = '50px';
+
+const QuestionContainerStyled = styled.section`
+    margin-bottom: ${messageMinHeight};
+`;
+
 const QuestionTitleStyled = styled.h3`
-    font-size: 30px;
+    font-size: 40px;
     font-family: ${props => props.theme.titleFont};
     color: ${props => props.theme.secondaryColor};
 `;
@@ -46,45 +59,70 @@ const QuestionOptionsStyled = styled.div`
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    margin-bottom: 20px;
+    margin-bottom: 48px;
 
-    ${RadioContainerStyled} {
-        flex-basis: 50%;
-        box-sizing: border-box;
-        padding: 16px;
-        display: flex;
-        align-items: center;
-    }
+    ${RadioContainerStyled},
+    ${CheckboxContainerStyled} {
+        flex-basis: 100%;
 
-    ${RadioLabelStyled} {
-        font-family: ${props => props.theme.mainFont};
-        font-size: 20px;
-        color: ${props => props.theme.secondaryColor};
-    }
-
-    ${RadioButtonStyled} {
-        appearance: none;
-        width: 30px;
-        height: 30px;
-        background-color: ${props => props.theme.primaryColor};
-        border-radius: 50%;
-        position: relative;
-
-        &:checked {
-            &::before {
-                content: '';
-                position: absolute;
-                left: 50%;
-                top: 50%;
-                transform: translate(-50%, -50%);
-                background-color: ${props => props.theme.quinaryColor};
-                z-index: 20;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-            }
+        @media ${devices.tablet} {
+            flex-basis: 50%;
         }
     }
+`;
+
+const QuestionButtonsStyled = styled.div`
+    width: 100%;
+    display: flex;
+    min-height: 50px;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    flex-direction: column-reverse;
+
+    @media ${devices.tablet} {
+        flex-direction: revert;
+    }
+
+    & > * {
+        flex-basis: 100%;
+        margin-bottom: 8px;
+
+        @media ${devices.tablet} {
+            flex-basis: 48%;
+        }
+    }
+`;
+
+const QuestionMessageContainerStyled = styled.div`
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    animation: ${fadeIn} 0.1s ease-out;
+    justify-content: center;
+    margin-bottom: 20px;
+`;
+
+const QuestionMessageBGSuccess = styled(QuestionMessageContainerStyled)`
+    background-color: ${props => props.theme.successColor}
+`;
+
+const QuestionMessageBGError = styled(QuestionMessageContainerStyled)`
+    background-color: ${props => props.theme.errorColor}
+`;
+
+const QuestionMessageBG = styled(QuestionMessageContainerStyled)`
+    background-color: ${props => props.theme.secondaryColor}
+`;
+
+const QuestionMessageStyled = styled.div`
+    font-family: ${props => props.theme.mainFont};
+    font-size: 20px;
+    color: ${props => props.theme.whiteColor};
+`;
+
+const QuestionMessagePlaceHolder = styled.div`
+    height: ${messageMinHeight};
 `;
 
 export default class Question extends React.Component<
@@ -178,9 +216,9 @@ export default class Question extends React.Component<
             submitAnswerButton
         } = this.props.language;
         return (
-            <BigButton onClick={this.onSubmitAnswer}>
+            <PrimaryButton onClick={this.onSubmitAnswer}>
                 {submitAnswerButton}
-            </BigButton>
+            </PrimaryButton>
         )
     }
 
@@ -190,13 +228,13 @@ export default class Question extends React.Component<
         const questionCompleted = status !== QuestionStatus.NO_ANSWER
             && status !== QuestionStatus.ERROR_NO_ANSWERS;
         return (
-            <div>
+            <QuestionButtonsStyled>
                 { renderBackButton }
                 { questionCompleted && renderNextButton
                     ? renderNextButton
                     : this.renderSubmitAnswerButton()
                 }
-            </div>
+            </QuestionButtonsStyled>
         )
     }
 
@@ -241,21 +279,35 @@ export default class Question extends React.Component<
         let message;
         switch (status) {
             case QuestionStatus.PASSED:
-                message = answerCorrect;
+                message = (
+                    <QuestionMessageBGSuccess>
+                        <QuestionMessageStyled aria-label={answerCorrect}>
+                            {answerCorrect}
+                        </QuestionMessageStyled>
+                    </QuestionMessageBGSuccess>
+                );
                 break;
             case QuestionStatus.FAILED:
-                message = errorWrongAnswers;
+                message = (
+                    <QuestionMessageBGError>
+                        <QuestionMessageStyled aria-label={errorWrongAnswers}>
+                            {errorWrongAnswers}
+                        </QuestionMessageStyled>
+                    </QuestionMessageBGError>
+                );
                 break;
             default:
-                message = errorNoOptionSelected;
+                message = (
+                    <QuestionMessageBG>
+                        <QuestionMessageStyled aria-label={errorNoOptionSelected}>
+                            {errorNoOptionSelected}
+                        </QuestionMessageStyled>
+                    </QuestionMessageBG>
+                );
                 break;
         }
 
-        return (
-            <div>
-                {message}
-            </div>
-        )
+        return (message)
     }
 
     renderRadioGroup() {
@@ -290,7 +342,7 @@ export default class Question extends React.Component<
         const { description } = question;
 
         return  (
-            <div>
+            <QuestionContainerStyled>
                 <QuestionTitleStyled>
                     {description[languageCode]}
                 </QuestionTitleStyled>
@@ -301,9 +353,11 @@ export default class Question extends React.Component<
                             : this.renderRadioGroup()
                     }
                 </QuestionOptionsStyled>
-                { status !== QuestionStatus.NO_ANSWER && this.renderMessage() }
                 { this.renderButton() }
-            </div>
+                <QuestionMessagePlaceHolder aria-live='assertive'>
+                    { status !== QuestionStatus.NO_ANSWER && this.renderMessage() }
+                </QuestionMessagePlaceHolder>
+            </QuestionContainerStyled>
         )
     }
        

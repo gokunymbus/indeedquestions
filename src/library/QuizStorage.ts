@@ -1,6 +1,8 @@
-import { IQuizData, IQuizResult, getScore, getCorrectQuestions } from "./QuizModel";
+import {
+    IQuizResult,
+} from './QuizModel';
 
-const storageKey = "quiz-storage";
+const storageKey = 'quiz-storage';
 
 export function setQuizResults(quizResult: IQuizResult) {
     const allQuizResults: IQuizResult[] = [quizResult];

@@ -1,11 +1,14 @@
 {
     "whiteColor": "#ffffff",
     "blackColor": "#000000",
+    "grayColor": "#6B6B6B",
     "primaryColor": "#6F5846",
     "secondaryColor": "#A95A52",
     "tertiaryColor": "#E35B5D",
     "quaternaryColor": "#F18052",
     "quinaryColor": "#FFA446",
+    "errorColor": "#CC2E36",
+    "successColor": "#266B22",
     "titleFont": "'Oleo Script Swash Caps', sans-serif",
     "mainFont": "'Rubik', sans-serif"
 }

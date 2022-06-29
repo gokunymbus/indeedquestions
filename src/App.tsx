@@ -1,28 +1,26 @@
 import React from 'react';
 import {getLanguageCode, getLanguageData} from './language/language';
-import Home from "./views/Home";
+import Home from './views/Home';
 import styled from 'styled-components';
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import {
   HashRouter,
   Routes,
-  Route,
-  Link
-} from "react-router-dom";
+  Route
+} from 'react-router-dom';
 import {
   IQuizData,
-  IQuestion,
   IAnsweredQuestion,
   getQuizResult
 } from './library/QuizModel';
-import { fetchQuizes } from "./library/QuizData";
-import Loading from "./views/Loading";
+import { fetchQuizes } from './library/QuizData';
+import Loading from './views/Loading';
 import AppRoutes from './library/AppRoutes';
 import Quiz from './views/Quiz';
-import { BigButton } from './components/Buttons';
 import Completed from './views/Completed';
 import { setQuizResults } from './library/QuizStorage';
 import main from './themes/main.json';
+import { PrimaryLink, SecondaryLink } from './components/Buttons';
 
 // Data
 const languageData:any = getLanguageData();
@@ -33,12 +31,10 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     height: 100%;
     width: 100%;
-    overflow: hidden;
   }
 `;
 
 const AppStyled = styled.div`
-  height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
@@ -73,11 +69,9 @@ class App extends React.Component<any, AppState> {
         backToStart
     } = languageData;
     return (
-        <Link to={AppRoutes.home}>
-          <BigButton onClick={() => {}}>
-              {backToStart}
-          </BigButton>
-        </Link>
+        <PrimaryLink to={AppRoutes.home}>
+          {backToStart}
+        </PrimaryLink>
     )
   }
 
@@ -86,11 +80,9 @@ class App extends React.Component<any, AppState> {
       playAgainButton
     } = languageData;
     return (
-        <Link to={AppRoutes.question}>
-          <BigButton onClick={() => {}}>
-              {playAgainButton}
-          </BigButton>
-        </Link>
+        <SecondaryLink to={AppRoutes.question}>
+            {playAgainButton}
+        </SecondaryLink>
     )
   }
 
@@ -99,11 +91,9 @@ class App extends React.Component<any, AppState> {
         completeQuizButton
     } = languageData;
       return (
-        <Link to={AppRoutes.complete}>
-          <BigButton onClick={() => {}}>
-              {completeQuizButton}
-          </BigButton>
-        </Link>
+        <PrimaryLink to={AppRoutes.complete}>
+            {completeQuizButton}
+        </PrimaryLink>
       )
   }
 
@@ -111,52 +101,50 @@ class App extends React.Component<any, AppState> {
     const languageCode = getLanguageCode();
     const {quiz} = this.state;
     return (
-      <ThemeProvider theme={main}>
-        <HashRouter>
-          <Routes>
-            <Route
-              path={AppRoutes.home}
-              element={
-                <Home
-                  language={languageData}
-                  linkTo={`${AppRoutes.question}`}
-                  peppers={20}
-                />
-              }
-            />
-            <Route
-              path={`${AppRoutes.question}`}
-              element={
-                <Quiz
-                  language={languageData}
-                  languageCode={languageCode}
-                  data={quiz}
-                  onComplete={(answeredQuestions: IAnsweredQuestion[]) => {
-                    setQuizResults(
-                      getQuizResult({
-                        ...quiz!,
-                        answeredQuestions: [...answeredQuestions]
-                      })
-                    );
-                  }}
-                  renderBackToStartButton={this.renderBackToStartButton()}
-                  renderCompleteButton={this.renderCompleteQuizButton()}
-                />
-              }
-            />
-            <Route
-              path={`${AppRoutes.complete}`}
-              element={
-                <Completed
-                  language={languageData}
-                  languageCode={languageCode}
-                  renderPlayAgain={this.renderPlayAgainButton()}
-                />
-              }
-            />
-          </Routes>
-        </HashRouter>
-      </ThemeProvider>
+      <HashRouter>
+        <Routes>
+          <Route
+            path={AppRoutes.home}
+            element={
+              <Home
+                language={languageData}
+                linkTo={`${AppRoutes.question}`}
+                peppers={20}
+              />
+            }
+          />
+          <Route
+            path={`${AppRoutes.question}`}
+            element={
+              <Quiz
+                language={languageData}
+                languageCode={languageCode}
+                data={quiz}
+                onComplete={(answeredQuestions: IAnsweredQuestion[]) => {
+                  setQuizResults(
+                    getQuizResult({
+                      ...quiz!,
+                      answeredQuestions: [...answeredQuestions]
+                    })
+                  );
+                }}
+                renderBackToStartButton={this.renderBackToStartButton()}
+                renderCompleteButton={this.renderCompleteQuizButton()}
+              />
+            }
+          />
+          <Route
+            path={`${AppRoutes.complete}`}
+            element={
+              <Completed
+                language={languageData}
+                languageCode={languageCode}
+                renderPlayAgain={this.renderPlayAgainButton()}
+              />
+            }
+          />
+        </Routes>
+      </HashRouter>
     )
   }
 
@@ -164,13 +152,16 @@ class App extends React.Component<any, AppState> {
     const {quiz} = this.state;
     return (
         <AppStyled>
-          <GlobalStyle />
-          {(quiz)
-            ?
-              this.renderQuiz()
-                :
-              this.renderLoading()
-          }
+          <ThemeProvider theme={main}>
+            <GlobalStyle />
+            {(quiz)
+              ?
+                this.renderQuiz()
+                  :
+                this.renderLoading()
+            }
+            
+          </ThemeProvider>
         </AppStyled>
     );
   }

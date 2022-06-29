@@ -14,26 +14,26 @@ export interface languageObject {
     [name: string]: string
 }
 
-const defaultLanguageCode = "en";
+const defaultLanguageCode = 'en';
 export function getLanguageCode(): string {
     const lang = navigator.language;
     let foundCode: string;
 
     switch (true) {
         case /^en\b/.test(lang):
-            foundCode = "en";
+            foundCode = 'en';
             break;
 
         case /^es\b/.test(lang):
-            foundCode = "es";
+            foundCode = 'es';
             break;
 
         case /^ja\b/.test(lang):
-            foundCode = "ja";
+            foundCode = 'ja';
             break;
 
         case /^uk\b/.test(lang):
-            foundCode = "uk";
+            foundCode = 'uk';
             break;
 
         default:

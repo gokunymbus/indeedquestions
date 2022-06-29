@@ -1,15 +1,15 @@
 import { ReactNode } from 'react';
-import { BigButton } from '../components/Buttons';
+import { PrimaryButton, SecondaryButton } from '../components/Buttons';
 import React from 'react';
 import styled from 'styled-components';
 import useWithParams from '../library/useWithParams';
 import {
     IQuizPosition,
     IQuizData,
-    getScore,
     IQuestion,
     IQuestionOption,
-    IAnsweredQuestion
+    IAnsweredQuestion,
+    getCorrectQuestions
 } from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
 import Question from './Question';
@@ -31,7 +31,7 @@ interface IQuizState {
 
 const QuizContainerStyled = styled.div`
     width: 100%;
-    height: 100%;
+    min-height: 100vh;
     background-color: ${props => props.theme.quinaryColor};
     display: flex;
     align-items: center;
@@ -40,7 +40,6 @@ const QuizContainerStyled = styled.div`
 
 const QuizInnerContainer = styled.div`
     width: 100%;
-    height: auto;
     padding: 18px;
     box-sizing: border-box;
 
@@ -62,20 +61,16 @@ const HeaderContainerStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: linear-gradient(-45deg, ${
-        p => p.theme.tertiaryColor 
-    }, ${
-        p => p.theme.quaternaryColor
-    });
     border-radius: 8px;
-    padding: 20px;
+    padding: 20px 0;
     box-sizing: border-box;
 `;
 
 const HeaderTitleStyled = styled.h2`
     font-size: 18px;
     font-family: ${props => props.theme.mainFont};
-    color: ${props => props.theme.whiteColor}
+    
+    color: ${props => props.theme.secondaryColor};
 `;
 
 class Quiz extends React.Component<IQuizProps, IQuizState> {
@@ -120,7 +115,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
 
     getScore(): number {
         const { answeredQuestions } = this.state;
-        return getScore(answeredQuestions);
+        return getCorrectQuestions(answeredQuestions);
     }
 
     getQuestionPosititon(questionID: number): IQuizPosition {
@@ -191,7 +186,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
         } = language;
        
         return (
-            <BigButton onClick={() =>{
+            <PrimaryButton onClick={() =>{
                 this.setState((state) => {
                     const {
                         currentQuestionID
@@ -203,7 +198,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
                 })
             }}>
                 {nextQuestionButton}
-            </BigButton>
+            </PrimaryButton>
         )
     }
 
@@ -215,7 +210,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
             previousQuestionButton
         } = language;
         return (
-            <BigButton onClick={() => {
+            <SecondaryButton onClick={() => {
                 this.setState((state) => {
                     const {
                         currentQuestionID
@@ -227,7 +222,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
                 })
             }}>
                 {previousQuestionButton}
-            </BigButton>
+            </SecondaryButton>
         )
     }
 
