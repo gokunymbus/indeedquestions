@@ -30,6 +30,7 @@ const HomeStyledInnerContainer = styled.div`
     width: 100%;
     height: 100%;
     z-index: ${ZIndexLayers.middle};
+    position: relative;
 `;
 
 const HomeMainTitleStyled = styled.h1`

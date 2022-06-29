@@ -15,13 +15,13 @@ export const fadeInLong = keyframes`
 
 export const fallIn = keyframes`
     0% {
-        transform: rotateZ(-15deg) rotateY(-12deg) translate(0, -100vh);
+        transform: rotateZ(-15deg) rotateY(-12deg) translate(0, -70vh);
     }
     10% {
-        transform: rotateZ(10deg) rotateY(20deg) translate(-40vw, -90vh);
+        transform: rotateZ(10deg) rotateY(20deg) translate(-40vw, -60vh);
     }
     50% {
-        transform: rotateZ(-15deg) rotateY(-20deg) translate(50vw, -50vh);
+        transform: rotateZ(-15deg) rotateY(-20deg) translate(50vw, -35vh);
     }
     75% {
         transform: rotateZ(10deg) rotateY(10deg) translate(-20vw, -25vh);
