@@ -1,14 +1,8 @@
 import { languageObject } from '../language/language';
 
-export enum GradeResponses {
-    ERROR_NO_ANSWERS,
-    FAILED,
-    PASSED
-}
-
 export enum QuestionType {
-    MULTI = <any>'multi',
-    SINGLE = <any>'single'
+    MULTI = 'multi',
+    SINGLE = 'single'
 }
 
 export interface IQuestionOption {

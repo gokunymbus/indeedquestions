@@ -64,9 +64,11 @@ export const CheckboxLabelStyled = styled.label`
 export default class Checkbox extends React.Component<
     CheckboxProps, {isChecked: boolean}
 > {
-    constructor(props: any) {
+    constructor(props: CheckboxProps) {
         super(props);
-        this.state = {isChecked: props.defaultChecked};
+        this.state = {
+            isChecked: props.defaultChecked
+        };
     }
 
     onChangeHandler() {

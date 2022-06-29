@@ -1,5 +1,9 @@
 import React from 'react';
-import {getLanguageCode, getLanguageData} from './language/language';
+import {
+    getLanguageCode,
+    getLanguageData,
+    languageObject
+} from './language/language';
 import Home from './views/Home';
 import styled from 'styled-components';
 import { createGlobalStyle, ThemeProvider } from 'styled-components'
@@ -22,8 +26,7 @@ import { setQuizResults } from './library/QuizStorage';
 import main from './themes/main.json';
 import { PrimaryLink, SecondaryLink } from './components/Buttons';
 
-// Data
-const languageData:any = getLanguageData();
+const languageData: languageObject = getLanguageData();
 
 const GlobalStyle = createGlobalStyle`
   body, html, #root {
@@ -45,8 +48,8 @@ interface AppState {
   quiz?: IQuizData;
 }
 
-class App extends React.Component<any, AppState> {
-  constructor(props: any) {
+class App extends React.Component<{}, AppState> {
+  constructor(props: {}) {
     super(props);
     this.state = {}
   }
@@ -155,10 +158,8 @@ class App extends React.Component<any, AppState> {
           <ThemeProvider theme={main}>
             <GlobalStyle />
             {(quiz)
-              ?
-                this.renderQuiz()
-                  :
-                this.renderLoading()
+                ? this.renderQuiz()
+                : this.renderLoading()
             }
             
           </ThemeProvider>

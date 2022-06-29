@@ -64,7 +64,7 @@ export const RadioLabelStyled = styled.label`
 `;
 
 class RadioButton extends React.Component<RadioButtonProps, {}> {
-    constructor(props: any) {
+    constructor(props: RadioButtonProps) {
         super(props);
     }
 

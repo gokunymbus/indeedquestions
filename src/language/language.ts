@@ -1,7 +1,9 @@
 import en from './en.json';
 import ja from './ja.json';
 
-const languageData: any = {
+const languageData: {
+    [name: string]: languageObject
+} = {
     en,
     ja
 }
@@ -32,7 +34,7 @@ export function getLanguageCode(): string {
     return foundCode;
 }
 
-export function getLanguageData(): object {
+export function getLanguageData(): languageObject {
    const languageCode = getLanguageCode();
    return languageData[languageCode];
 }

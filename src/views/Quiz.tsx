@@ -13,10 +13,11 @@ import {
 } from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
 import Question from './Question';
-import {devices} from './Breakpoints';
+import { devices } from './Breakpoints';
+import { languageObject } from '../language/language';
 
 interface IQuizProps {
-    language: any;
+    language: languageObject;
     data: IQuizData;
     languageCode: string;
     onComplete: (questions: IAnsweredQuestion[]) => void
@@ -85,7 +86,7 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
 
     updateQuestion(answers: IQuestionOption[], question: IQuestion) {
         this.setState((state) => {
-            const {answeredQuestions} = state;
+            const { answeredQuestions } = state;
             const exists = answeredQuestions.find(
                 aq => aq.id === question.id
             );
@@ -170,9 +171,10 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
     }
 
     renderNotFound() {
+        const {questionNotFound} = this.props.language;
         return(
             <QuizContainerStyled>
-                <QuizInnerContainer>Question Not Found!</QuizInnerContainer>
+                <QuizInnerContainer>{questionNotFound}</QuizInnerContainer>
             </QuizContainerStyled>
         )
     }

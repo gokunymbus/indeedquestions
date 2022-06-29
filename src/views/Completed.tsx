@@ -123,10 +123,17 @@ export default class Completed extends React.Component<ICompletedProps, {}> {
     }
 
     renderNoQuiz() {
-        const { language } = this.props;
+        const { language, renderPlayAgain } = this.props;
         const { noQuizCompleted } = language;
-        return (
-            <CompletedTitleStyled>{noQuizCompleted}</CompletedTitleStyled>
+        return ( 
+            <CompletedContainerStyled>
+                <CompletedInnerContainerStyled>
+                    <CompletedTitleStyled>
+                        {noQuizCompleted}
+                    </CompletedTitleStyled>
+                    {renderPlayAgain}
+                </CompletedInnerContainerStyled>
+            </CompletedContainerStyled>
         )
     }
 

@@ -21,5 +21,6 @@
     "gotSomeRight": "ねえ、あなたはいくつかの正しい、素晴らしい仕事をしました！",
     "youKnowSomeStuff": "うわー、あなたはいくつかのことを知っています",
     "youAreAnExpert": "あなたは専門家です、おめでとうございます！",
-    "welcome": "ホットソーステストへようこそ！"
+    "welcome": "ホットソーステストへようこそ！",
+    "questionNotFound": "質問が見つかりません！"
 }

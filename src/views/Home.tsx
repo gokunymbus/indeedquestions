@@ -7,9 +7,10 @@ import { devices } from './Breakpoints';
 import  {fadeAndSlideDown,  fallIn} from './Animations';
 import ZIndexLayers from './ZIndexLayers';
 import PepperRain from './PepperRain';
+import { languageObject } from '../language/language';
 
 interface IHomeProps {
-    language: any;
+    language: languageObject;
     linkTo: string;
     peppers: number;
 }

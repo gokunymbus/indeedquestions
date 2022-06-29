@@ -18,6 +18,7 @@ import Checkbox, {
 } from '../components/Checkbox';
 import { devices } from './Breakpoints';
 import { fadeIn } from './Animations';
+import { languageObject } from '../language/language';
 
 export enum QuestionStatus {
     NO_ANSWER,
@@ -29,7 +30,7 @@ export enum QuestionStatus {
 interface IQuestionProps {
    question: IQuestion;
    languageCode: string;
-   language: any;
+   language: languageObject;
    onQuestionCompleted: (
         answers: IQuestionOption[],
         question: IQuestion
@@ -45,9 +46,7 @@ interface IQuestionState {
 
 const messageMinHeight = '50px';
 
-const QuestionContainerStyled = styled.section`
-    margin-bottom: ${messageMinHeight};
-`;
+const QuestionContainerStyled = styled.section``;
 
 const QuestionTitleStyled = styled.h3`
     font-size: 40px;
