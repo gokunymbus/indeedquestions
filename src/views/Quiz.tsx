@@ -13,6 +13,7 @@ import {
 } from '../library/QuizModel';
 import replaceStringTokens from '../library/replaceStringTokens';
 import Question from './Question';
+import {devices} from './Breakpoints';
 
 interface IQuizProps {
     language: any;
@@ -28,10 +29,32 @@ interface IQuizState {
     currentQuestionID: number;
 }
 
-const QuestionStyled = styled.div`
+const QuizContainerStyled = styled.div`
     width: 100%;
     height: 100%;
     background-color: ${props => props.theme.quinaryColor};
+    display: flex;
+    align-items: center;
+    justify-content: center;
+`;
+
+const QuizInnerContainer = styled.div`
+    width: 100%;
+    height: auto;
+    padding: 18px;
+    box-sizing: border-box;
+
+    @media ${devices.tablet} {
+        width: 760px;
+    }
+
+    @media ${devices.laptop} {
+        width: 900px;
+    }
+
+    @media ${devices.desktop} {
+        width: 1200px;
+    }
 `;
 
 const HeaderContainerStyled = styled.div`
@@ -39,10 +62,20 @@ const HeaderContainerStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: space-between;
+    background: linear-gradient(-45deg, ${
+        p => p.theme.tertiaryColor 
+    }, ${
+        p => p.theme.quaternaryColor
+    });
+    border-radius: 8px;
+    padding: 20px;
+    box-sizing: border-box;
 `;
 
 const HeaderTitleStyled = styled.h2`
     font-size: 18px;
+    font-family: ${props => props.theme.mainFont};
+    color: ${props => props.theme.whiteColor}
 `;
 
 class Quiz extends React.Component<IQuizProps, IQuizState> {
@@ -143,9 +176,9 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
 
     renderNotFound() {
         return(
-            <QuestionStyled>
-               Question Not Found!
-            </QuestionStyled>
+            <QuizContainerStyled>
+                <QuizInnerContainer>Question Not Found!</QuizInnerContainer>
+            </QuizContainerStyled>
         )
     }
 
@@ -227,28 +260,30 @@ class Quiz extends React.Component<IQuizProps, IQuizState> {
     
         const score = this.getScore();
         return(
-            <QuestionStyled>
-                <HeaderContainerStyled>
-                    <HeaderTitleStyled>{position}</HeaderTitleStyled>
-                    <HeaderTitleStyled>{`${currentScore} ${score}`}</HeaderTitleStyled>
-                </HeaderContainerStyled>
-                <Question
-                    question={question}
-                    languageCode={languageCode}
-                    language={language}
-                    renderNextButton={
-                        (nextQuestion)
-                            ? this.renderNextButton()
-                            : renderCompleteButton
-                    }
-                    renderBackButton={
-                        (previousQuestion)
-                            ? this.renderBackButton()
-                            : renderBackToStartButton
-                    }
-                    onQuestionCompleted={this.onQuestionComplete}
-                />
-            </QuestionStyled>        
+            <QuizContainerStyled>
+                <QuizInnerContainer>
+                    <HeaderContainerStyled>
+                        <HeaderTitleStyled>{position}</HeaderTitleStyled>
+                        <HeaderTitleStyled>{`${currentScore} ${score}`}</HeaderTitleStyled>
+                    </HeaderContainerStyled>
+                    <Question
+                        question={question}
+                        languageCode={languageCode}
+                        language={language}
+                        renderNextButton={
+                            (nextQuestion)
+                                ? this.renderNextButton()
+                                : renderCompleteButton
+                        }
+                        renderBackButton={
+                            (previousQuestion)
+                                ? this.renderBackButton()
+                                : renderBackToStartButton
+                        }
+                        onQuestionCompleted={this.onQuestionComplete}
+                    />
+                </QuizInnerContainer>
+            </QuizContainerStyled>        
         )
     }
 

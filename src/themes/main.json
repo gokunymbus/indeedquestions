@@ -6,5 +6,6 @@
     "tertiaryColor": "#E35B5D",
     "quaternaryColor": "#F18052",
     "quinaryColor": "#FFA446",
-    "titleFont": "'Oleo Script Swash Caps', cursive"
+    "titleFont": "'Oleo Script Swash Caps', sans-serif",
+    "mainFont": "'Rubik', sans-serif"
 }

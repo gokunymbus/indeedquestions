@@ -3,7 +3,13 @@ import { BigButton } from '../components/Buttons';
 import React from 'react';
 import  { getCorrectOptions, IQuestion, IQuestionOption, QuestionType } from '../library/QuizModel';
 import styled from 'styled-components';
-import {RadioGroup, IRadioGroupItem} from '../components/RadioGroup';
+import {
+    RadioGroup,
+    IRadioGroupItem,
+    RadioLabelStyled,
+    RadioContainerStyled,
+    RadioButtonStyled
+} from '../components/RadioGroup';
 import Checkbox from '../components/Checkbox';
 
 export enum QuestionStatus {
@@ -31,7 +37,54 @@ interface IQuestionState {
 }
 
 const QuestionTitleStyled = styled.h3`
-    font-size: 16px;
+    font-size: 30px;
+    font-family: ${props => props.theme.titleFont};
+    color: ${props => props.theme.secondaryColor};
+`;
+
+const QuestionOptionsStyled = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    margin-bottom: 20px;
+
+    ${RadioContainerStyled} {
+        flex-basis: 50%;
+        box-sizing: border-box;
+        padding: 16px;
+        display: flex;
+        align-items: center;
+    }
+
+    ${RadioLabelStyled} {
+        font-family: ${props => props.theme.mainFont};
+        font-size: 20px;
+        color: ${props => props.theme.secondaryColor};
+    }
+
+    ${RadioButtonStyled} {
+        appearance: none;
+        width: 30px;
+        height: 30px;
+        background-color: ${props => props.theme.primaryColor};
+        border-radius: 50%;
+        position: relative;
+
+        &:checked {
+            &::before {
+                content: '';
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%, -50%);
+                background-color: ${props => props.theme.quinaryColor};
+                z-index: 20;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+            }
+        }
+    }
 `;
 
 export default class Question extends React.Component<
@@ -238,18 +291,16 @@ export default class Question extends React.Component<
 
         return  (
             <div>
-                <div>
-                    <QuestionTitleStyled>
-                        {description[languageCode]}
-                    </QuestionTitleStyled>
-                </div>
-                <div>
+                <QuestionTitleStyled>
+                    {description[languageCode]}
+                </QuestionTitleStyled>
+                <QuestionOptionsStyled>
                     {
                         (question.type == QuestionType.MULTI.toString())
                             ? this.renderCheckboxes()
                             : this.renderRadioGroup()
                     }
-                </div>
+                </QuestionOptionsStyled>
                 { status !== QuestionStatus.NO_ANSWER && this.renderMessage() }
                 { this.renderButton() }
             </div>
