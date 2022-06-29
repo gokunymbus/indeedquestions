@@ -10,16 +10,15 @@ interface RadioButtonProps {
     index: number;
 }
 
-const RadioButtonStyled = styled.input.attrs({
+export const RadioButtonStyled = styled.input.attrs({
     type: "radio",
 })``;
 
-const RadioContainerStyled = styled.div`
+export const RadioContainerStyled = styled.div`
     padding: 8px;
-    width: 100%;
 `;
 
-const RadioLabelStyled = styled.label`
+export const RadioLabelStyled = styled.label`
     padding: 8px;
 `;
 

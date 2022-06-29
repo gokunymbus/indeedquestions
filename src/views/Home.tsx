@@ -21,7 +21,7 @@ const HomeStyled = styled.div`
     background-color: ${props => props.theme.quinaryColor};
 `;
 
-const HomeStyledInnerContainer = styled.div`
+const HomeInnerContainerStyled = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
@@ -103,7 +103,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
         const { startButton, welcome } = language;
         return  (
             <HomeStyled>
-                <HomeStyledInnerContainer>
+                <HomeInnerContainerStyled>
                     <BigPepperContainer>
                         <Pepper pixelWidth={200} />
                     </BigPepperContainer>
@@ -111,7 +111,7 @@ export default class Home extends React.Component<IHomeProps, {}> {
                     <Link to={linkTo}>
                         <HomeButtonStyled onClick={() => {}} tabIndex={-1}>{startButton}</HomeButtonStyled>
                     </Link>
-                </HomeStyledInnerContainer>
+                </HomeInnerContainerStyled>
                 <PeppersRainContainer>
                     {this.peppers.map(() => {
                         return (
