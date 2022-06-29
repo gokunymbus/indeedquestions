@@ -64,27 +64,27 @@ class App extends React.Component<any, AppState> {
     return(<Loading />)
   }
 
-  renderBackToStartButton() {
-    const {
-        backToStart
-    } = languageData;
-    return (
-        <PrimaryLink to={AppRoutes.home}>
-          {backToStart}
-        </PrimaryLink>
-    )
-  }
+    renderBackToStartButton() {
+        const {
+            backToStart
+        } = languageData;
+        return (
+            <PrimaryLink to={AppRoutes.home}>
+                {backToStart}
+            </PrimaryLink>
+        )
+    }
 
-  renderPlayAgainButton() {
-    const {
-      playAgainButton
-    } = languageData;
-    return (
-        <SecondaryLink to={AppRoutes.question}>
-            {playAgainButton}
-        </SecondaryLink>
-    )
-  }
+    renderPlayAgainButton() {
+        const {
+            playAgainButton
+        } = languageData;
+        return (
+            <SecondaryLink to={AppRoutes.question}>
+                {playAgainButton}
+            </SecondaryLink>
+        )
+    }
 
   renderCompleteQuizButton() {
     const {

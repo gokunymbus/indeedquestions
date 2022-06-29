@@ -67,9 +67,9 @@ const HomeLinkStyled = styled(SecondaryLink)`
     padding: 16px 30px;
 `;
 
-const numberOFPeppers = 50;
+const numberOFPeppers = 20;
 
-export default class Home extends React.Component<IHomeProps, {}> {
+export default class Home extends React.Component<IHomeProps, unknown> {
     constructor(props: IHomeProps) {
         super(props);
     }

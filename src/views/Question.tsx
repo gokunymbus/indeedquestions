@@ -140,10 +140,9 @@ export default class Question extends React.Component<
         }
     }
 
-    componentDidUpdate(prevProps: IQuestionProps, prevState: IQuestionState) {
+    componentDidUpdate(prevProps: IQuestionProps) {
         const {question} = this.props;
         if (prevProps.question.id !== question.id) {
-            console.log(question);
             this.setState(this.defaultState())
         }
     }
