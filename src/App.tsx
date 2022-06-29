@@ -2,7 +2,7 @@ import React from 'react';
 import {getLanguageCode, getLanguageData} from './language/language';
 import Home from "./views/Home";
 import styled from 'styled-components';
-import { createGlobalStyle } from 'styled-components'
+import { createGlobalStyle, ThemeProvider } from 'styled-components'
 import {
   HashRouter,
   Routes,
@@ -22,6 +22,7 @@ import Quiz from './views/Quiz';
 import { BigButton } from './components/Buttons';
 import Completed from './views/Completed';
 import { setQuizResults } from './library/QuizStorage';
+import main from './themes/main.json';
 
 // Data
 const languageData:any = getLanguageData();
@@ -32,6 +33,7 @@ const GlobalStyle = createGlobalStyle`
     padding: 0;
     height: 100%;
     width: 100%;
+    overflow: hidden;
   }
 `;
 
@@ -109,50 +111,52 @@ class App extends React.Component<any, AppState> {
     const languageCode = getLanguageCode();
     const {quiz} = this.state;
     return (
-      <HashRouter>
-        <Routes>
-          <Route
-            path={AppRoutes.home}
-            element={
-              <Home
-                language={languageData}
-                linkTo={`${AppRoutes.question}`}
-              />
-            }
-          />
-          <Route
-            path={`${AppRoutes.question}`}
-            element={
-              <Quiz
-                language={languageData}
-                languageCode={languageCode}
-                data={quiz}
-                onComplete={(answeredQuestions: IAnsweredQuestion[]) => {
-                  setQuizResults(
-                    getQuizResult({
-                      ...quiz!,
-                      answeredQuestions: [...answeredQuestions]
-                    })
-                  );
-                }}
-                renderBackToStartButton={this.renderBackToStartButton()}
-                renderCompleteButton={this.renderCompleteQuizButton()}
-              />
-            }
-          />
-          <Route
-            path={`${AppRoutes.complete}`}
-            element={
-              <Completed
-                language={languageData}
-                languageCode={languageCode}
-                renderPlayAgain={this.renderPlayAgainButton()}
-              />
-            }
-          />
-        </Routes>
-      </HashRouter>
-      
+      <ThemeProvider theme={main}>
+        <HashRouter>
+          <Routes>
+            <Route
+              path={AppRoutes.home}
+              element={
+                <Home
+                  language={languageData}
+                  linkTo={`${AppRoutes.question}`}
+                  peppers={20}
+                />
+              }
+            />
+            <Route
+              path={`${AppRoutes.question}`}
+              element={
+                <Quiz
+                  language={languageData}
+                  languageCode={languageCode}
+                  data={quiz}
+                  onComplete={(answeredQuestions: IAnsweredQuestion[]) => {
+                    setQuizResults(
+                      getQuizResult({
+                        ...quiz!,
+                        answeredQuestions: [...answeredQuestions]
+                      })
+                    );
+                  }}
+                  renderBackToStartButton={this.renderBackToStartButton()}
+                  renderCompleteButton={this.renderCompleteQuizButton()}
+                />
+              }
+            />
+            <Route
+              path={`${AppRoutes.complete}`}
+              element={
+                <Completed
+                  language={languageData}
+                  languageCode={languageCode}
+                  renderPlayAgain={this.renderPlayAgainButton()}
+                />
+              }
+            />
+          </Routes>
+        </HashRouter>
+      </ThemeProvider>
     )
   }
 

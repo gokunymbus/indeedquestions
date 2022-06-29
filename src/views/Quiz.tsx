@@ -30,7 +30,8 @@ interface IQuizState {
 
 const QuestionStyled = styled.div`
     width: 100%;
-    height: auto;
+    height: 100%;
+    background-color: ${props => props.theme.quinaryColor};
 `;
 
 const HeaderContainerStyled = styled.div`

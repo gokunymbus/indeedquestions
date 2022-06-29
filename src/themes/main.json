@@ -1,0 +1,10 @@
+{
+    "whiteColor": "#ffffff",
+    "blackColor": "#000000",
+    "primaryColor": "#6F5846",
+    "secondaryColor": "#A95A52",
+    "tertiaryColor": "#E35B5D",
+    "quaternaryColor": "#F18052",
+    "quinaryColor": "#FFA446",
+    "titleFont": "'Oleo Script Swash Caps', cursive"
+}
